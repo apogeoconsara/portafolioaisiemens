@@ -171,19 +171,6 @@ document.getElementById("loadSampleBtn").addEventListener("click", () => {
   });
 });
 
-document.getElementById("csvInput").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file || !currentMaster.length) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    currentActualsHeaders = parseCSV(reader.result).headers;
-    currentActuals = parseCSV(reader.result).rows;
-    currentSource = file.name;
-    runPipelineAnimation(true);
-  };
-  reader.readAsText(file);
-});
-
 document.getElementById("runPipelineBtn").addEventListener("click", () => {
   if (!currentActuals.length) return;
   runPipelineAnimation(true);
@@ -407,42 +394,10 @@ document.getElementById("chatForm").addEventListener("submit", async (e) => {
   }
 });
 
-// ---------- API key modal ----------
-const apiKeyModal = document.getElementById("apiKeyModal");
-
-function updateApiKeyBtnLabel() {
-  document.getElementById("apiKeyBtnLabel").textContent = getApiKey() ? t("sidebar.apiKeyOn") : t("sidebar.apiKey");
-  document.getElementById("apiKeyBtn").classList.toggle("connected", !!getApiKey());
-}
-
-document.getElementById("apiKeyBtn").addEventListener("click", () => {
-  document.getElementById("apiKeyInput").value = getApiKey() || "";
-  apiKeyModal.classList.add("open");
-});
-document.getElementById("apiKeyCloseBtn").addEventListener("click", () => apiKeyModal.classList.remove("open"));
-apiKeyModal.addEventListener("click", (e) => { if (e.target === apiKeyModal) apiKeyModal.classList.remove("open"); });
-
-document.getElementById("apiKeySaveBtn").addEventListener("click", () => {
-  const key = document.getElementById("apiKeyInput").value.trim();
-  const remember = document.getElementById("apiKeyRemember").checked;
-  setApiKey(key, remember);
-  updateApiKeyBtnLabel();
-  if (currentReport) renderRuleBasedInsights(currentReport);
-  apiKeyModal.classList.remove("open");
-});
-
-document.getElementById("apiKeyClearBtn").addEventListener("click", () => {
-  clearApiKey();
-  document.getElementById("apiKeyInput").value = "";
-  updateApiKeyBtnLabel();
-  if (currentReport) renderRuleBasedInsights(currentReport);
-});
-
 // ---------- Init ----------
 applyI18n();
 renderChatSuggestions();
 appendMessage(t("assistant.greeting"), "bot");
-updateApiKeyBtnLabel();
 
 Promise.all([
   fetchText("assets/data/fico_actuals.csv"),

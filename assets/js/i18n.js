@@ -9,14 +9,11 @@ const I18N = {
     "nav.insights": "AI Executive Summary",
     "nav.assistant": "AI Assistant",
     "sidebar.language": "Language",
-    "sidebar.apiKey": "Connect Claude API",
-    "sidebar.apiKeyOn": "Claude API connected",
     "sidebar.footer": "Automation demo for the Siemens Energy Digital Finance role",
 
     "pipeline.title": "SAP FI/CO Data Pipeline",
     "pipeline.desc": "Joins a SAP FI/CO actual/plan extract (BUKRS, KOKRS, GJAHR/POPER, KOSTL, KSTAR) against cost-center master data, an MM inventory extract, and a non-SAP ops KPI feed. No manual spreadsheet work.",
     "pipeline.loadSample": "Load sample SAP extract",
-    "pipeline.uploadOwn": "Upload your own FI/CO actuals CSV",
     "pipeline.run": "Run pipeline",
     "pipeline.step.extract": "Extract",
     "pipeline.step.extract.desc": "Read FI/CO actuals, cost-center master, MM inventory & ops KPIs",
@@ -105,16 +102,7 @@ const I18N = {
     "assistant.greeting": "Ask me about the loaded dataset — budget variance, inventory risk, the automation pipeline, or how to query it with SQL.",
     "assistant.thinking": "Thinking...",
     "assistant.fallback.generic": "I can answer questions about budget variance, inventory risk, productivity trends, the SAP-style pipeline, or SQL queries on the loaded dataset. Connect a Claude API key for open-ended answers.",
-    "assistant.error": "Claude request failed ({{msg}}). Falling back to the automation-logic assistant.",
-
-    "modal.apiKey.title": "Connect your Anthropic API key",
-    "modal.apiKey.body": "The key is used only in this browser tab and sent directly to Anthropic's API — it is never sent to any other server. This page has no backend. This direct-from-browser pattern is meant for demos/prototyping, not production use.",
-    "modal.apiKey.placeholder": "sk-ant-...",
-    "modal.apiKey.remember": "Remember for this browser session only",
-    "modal.apiKey.save": "Save",
-    "modal.apiKey.clear": "Clear key",
-    "modal.apiKey.close": "Close",
-    "modal.apiKey.without": "Without a key, every tab still works using deterministic automation logic instead of live AI generation."
+    "assistant.error": "Claude request failed ({{msg}}). Falling back to the automation-logic assistant."
   },
   es: {
     "app.title": "Consola de Digital Finance",
@@ -125,14 +113,11 @@ const I18N = {
     "nav.insights": "Resumen Ejecutivo IA",
     "nav.assistant": "Asistente IA",
     "sidebar.language": "Idioma",
-    "sidebar.apiKey": "Conectar API de Claude",
-    "sidebar.apiKeyOn": "API de Claude conectada",
     "sidebar.footer": "Demo de automatización para la posición Digital Finance en Siemens Energy",
 
     "pipeline.title": "Pipeline de datos SAP FI/CO",
     "pipeline.desc": "Cruza un extracto de actuals/plan SAP FI/CO (BUKRS, KOKRS, GJAHR/POPER, KOSTL, KSTAR) con el maestro de centros de costo, un extracto de inventario MM y una fuente de KPIs de operaciones (no-SAP). Sin trabajo manual en hojas de cálculo.",
     "pipeline.loadSample": "Cargar extracto SAP de ejemplo",
-    "pipeline.uploadOwn": "Cargar tu propio CSV de actuals FI/CO",
     "pipeline.run": "Ejecutar pipeline",
     "pipeline.step.extract": "Extraer",
     "pipeline.step.extract.desc": "Lee actuals FI/CO, maestro de centros de costo, inventario MM y KPIs de operaciones",
@@ -221,16 +206,7 @@ const I18N = {
     "assistant.greeting": "Pregúntame sobre el dataset cargado: variación presupuestal, riesgo de inventario, el pipeline de automatización o cómo consultarlo con SQL.",
     "assistant.thinking": "Pensando...",
     "assistant.fallback.generic": "Puedo responder sobre variación presupuestal, riesgo de inventario, tendencias de productividad, el pipeline estilo SAP o consultas SQL sobre el dataset cargado. Conecta una API key de Claude para respuestas abiertas.",
-    "assistant.error": "La solicitud a Claude falló ({{msg}}). Usando el asistente basado en reglas.",
-
-    "modal.apiKey.title": "Conecta tu API key de Anthropic",
-    "modal.apiKey.body": "La key se usa solo en esta pestaña del navegador y se envía directamente a la API de Anthropic — nunca a otro servidor. Esta página no tiene backend. Este patrón directo desde el navegador es para demos/prototipos, no para producción.",
-    "modal.apiKey.placeholder": "sk-ant-...",
-    "modal.apiKey.remember": "Recordar solo durante esta sesión del navegador",
-    "modal.apiKey.save": "Guardar",
-    "modal.apiKey.clear": "Borrar key",
-    "modal.apiKey.close": "Cerrar",
-    "modal.apiKey.without": "Sin una key, cada pestaña sigue funcionando con lógica de automatización determinística en vez de generación de IA en vivo."
+    "assistant.error": "La solicitud a Claude falló ({{msg}}). Usando el asistente basado en reglas."
   }
 };
 

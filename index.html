@@ -52,10 +52,6 @@
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="es">ES</button>
       </div>
-      <button class="api-key-btn" id="apiKeyBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M11 12l7-7M16 5l3 3M13 8l2 2"/></svg>
-        <span id="apiKeyBtnLabel" data-i18n="sidebar.apiKey"></span>
-      </button>
       <p class="sidebar-footer" data-i18n="sidebar.footer"></p>
     </div>
   </aside>
@@ -75,10 +71,6 @@
       <section class="view active" data-view="pipeline">
         <div class="controls-row">
           <button id="loadSampleBtn" class="btn btn-primary" data-i18n="pipeline.loadSample"></button>
-          <label class="file-btn">
-            <span data-i18n="pipeline.uploadOwn"></span>
-            <input type="file" id="csvInput" accept=".csv" hidden>
-          </label>
           <button id="runPipelineBtn" class="btn btn-ghost" data-i18n="pipeline.run"></button>
           <span id="pipelineStatus" class="data-status" data-i18n="pipeline.status.idle"></span>
         </div>
@@ -155,25 +147,6 @@
 
     </div>
   </main>
-</div>
-
-<!-- API KEY MODAL -->
-<div class="modal-overlay" id="apiKeyModal">
-  <div class="modal">
-    <h3 data-i18n="modal.apiKey.title"></h3>
-    <p class="modal-body" data-i18n="modal.apiKey.body"></p>
-    <input type="password" id="apiKeyInput" class="modal-input" data-i18n-placeholder="modal.apiKey.placeholder">
-    <label class="modal-remember">
-      <input type="checkbox" id="apiKeyRemember">
-      <span data-i18n="modal.apiKey.remember"></span>
-    </label>
-    <p class="modal-without" data-i18n="modal.apiKey.without"></p>
-    <div class="modal-actions">
-      <button id="apiKeyClearBtn" class="btn btn-ghost" data-i18n="modal.apiKey.clear"></button>
-      <button id="apiKeySaveBtn" class="btn btn-primary" data-i18n="modal.apiKey.save"></button>
-      <button id="apiKeyCloseBtn" class="btn btn-ghost" data-i18n="modal.apiKey.close"></button>
-    </div>
-  </div>
 </div>
 
 <script src="assets/js/i18n.js"></script>
