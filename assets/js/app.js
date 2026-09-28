@@ -149,7 +149,7 @@ function destroyCharts() {
   chartRefs = {};
 }
 
-const CHART_COLORS = { accent: "#00b0ea", accent2: "#6cd4ff", good: "#35d18a", warn: "#ffb648", bad: "#ff6a6a", grid: "#22314c", text: "#9fb0cc" };
+const CHART_COLORS = { accent: "#0077b6", accent2: "#0091d4", good: "#1a9c63", warn: "#b5720a", bad: "#d1373f", grid: "#e3e8f1", text: "#5a6478" };
 
 function baseOptions(extra = {}) {
   return Object.assign({
