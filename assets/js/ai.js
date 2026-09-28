@@ -64,18 +64,18 @@ async function callClaude({ model, system, messages, maxTokens }) {
 function buildDataContext(report, rowCount) {
   const { kpis, charts } = report;
   const lines = [];
-  lines.push(`Dataset: ${rowCount} rows from a simulated SAP FI/CO cost-center extract, ${kpis.costCenterCount} cost centers, latest month ${kpis.latestMonth}.`);
-  lines.push(`Total spend in period: $${Math.round(kpis.totalActual)} vs. budget $${Math.round(kpis.totalBudget)}.`);
+  lines.push(`Dataset: ${rowCount} SAP FI/CO actual/plan line items (BUKRS/KOKRS/GJAHR/POPER/KOSTL/KSTAR schema) joined against cost-center master data (CSKS/CSKT-style), an MM inventory extract, and a non-SAP ops KPI feed. ${kpis.costCenterCount} cost centers (KOSTL), latest period ${kpis.latestMonth}.`);
+  lines.push(`Total spend in period: $${Math.round(kpis.totalActual)} vs. plan $${Math.round(kpis.totalBudget)}.`);
   lines.push(`Budget variance in ${kpis.latestMonth}: ${kpis.latestVariancePct.toFixed(1)}%.`);
   lines.push(`Average productivity index: ${kpis.avgProductivity.toFixed(2)} (target 1.00).`);
-  lines.push(`Average inventory gap vs. target: ${kpis.inventoryGapPct.toFixed(1)}%.`);
-  lines.push("Variance by cost center (latest month):");
-  charts.varianceByCC.forEach(v => lines.push(`- ${v.ccLabel}: ${v.variance.toFixed(1)}% vs. budget`));
+  lines.push(`Average inventory gap vs. reorder point (MINBE): ${kpis.inventoryGapPct.toFixed(1)}%.`);
+  lines.push("Variance by cost center (latest period):");
+  charts.varianceByCC.forEach(v => lines.push(`- ${v.ccLabel}: ${v.variance.toFixed(1)}% vs. plan${v.unmastered ? " [GOVERNANCE ISSUE: this KOSTL has no cost-center master record]" : ""}${v.blocked ? " [GOVERNANCE ISSUE: this KOSTL is BLOCKED in master data]" : ""}`));
   if (charts.inventoryByCC.length) {
-    lines.push("Inventory actual vs. target (latest month):");
-    charts.inventoryByCC.forEach(i => lines.push(`- ${i.ccLabel}: ${i.actual} actual vs. ${i.target} target`));
+    lines.push("Inventory actual (LABST) vs. reorder point (MINBE), latest period:");
+    charts.inventoryByCC.forEach(i => lines.push(`- ${i.ccLabel}: ${i.actual} actual vs. ${i.target} reorder point`));
   }
-  lines.push("Productivity index by month: " + charts.productivityByMonth.map(p => `${p.month}=${p.index.toFixed(2)}`).join(", "));
+  lines.push("Productivity index by period: " + charts.productivityByMonth.map(p => `${p.month}=${p.index.toFixed(2)}`).join(", "));
   return lines.join("\n");
 }
 

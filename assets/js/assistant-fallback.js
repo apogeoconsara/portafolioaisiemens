@@ -7,6 +7,24 @@ function normalize(s) {
 
 const FALLBACK_RULES = [
   {
+    keywords: ["unmastered", "master data", "no maestread", "sin maestro", "governance", "gobierno", "blocked", "bloquead"],
+    answer: (report, lang) => {
+      const flagged = report.charts.varianceByCC.filter(v => v.unmastered || v.blocked);
+      if (!flagged.length) {
+        return lang === "es"
+          ? "En el periodo actual no hay centros de costo sin maestro ni bloqueados en las partidas cargadas."
+          : "No unmastered or blocked cost centers in the currently loaded period's postings.";
+      }
+      const lines = flagged.map(v => lang === "es"
+        ? `${v.ccLabel}: ${v.unmastered ? "sin registro maestro (KOSTL no existe en cost_center_master)" : "centro BLOQUEADO en datos maestros"}`
+        : `${v.ccLabel}: ${v.unmastered ? "no cost-center master record (KOSTL missing from cost_center_master)" : "cost center is BLOCKED in master data"}`
+      );
+      return (lang === "es"
+        ? "El pipeline detectó automáticamente estos problemas de gobierno de datos:\n"
+        : "The pipeline automatically flagged these data-governance issues:\n") + lines.join("\n");
+    }
+  },
+  {
     keywords: ["variance", "variacion", "budget", "presupuesto", "sobrecosto", "overspend"],
     answer: (report, lang) => {
       const worst = [...report.charts.varianceByCC].sort((a, b) => b.variance - a.variance)[0];

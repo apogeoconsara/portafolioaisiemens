@@ -1,6 +1,11 @@
 // ---------- Global state ----------
-let currentHeaders = [];
-let currentRows = [];
+let currentActualsHeaders = [];
+let currentActuals = [];
+let currentMaster = [];
+let currentInventoryRaw = [];
+let currentOps = [];
+let currentFinance = [];
+let currentInventory = [];
 let currentSource = "";
 let currentReport = null;
 let activeView = "pipeline";
@@ -63,7 +68,10 @@ function renderQualityChecks(checks) {
   list.innerHTML = checks.map(c => `
     <li class="${c.passed ? "pass" : "fail"}">
       <span class="check-icon">${c.passed ? "✓" : "✕"}</span>
-      <span>${t(c.key, c.vars)}</span>
+      <div>
+        <span>${t(c.key, c.vars)}</span>
+        ${!c.passed && c.detail && c.detail.length ? `<div class="check-detail">${c.detail.join(", ")}</div>` : ""}
+      </div>
     </li>
   `).join("");
 }
@@ -91,7 +99,7 @@ function resetSteps() {
   document.querySelectorAll(".step").forEach(el => el.classList.remove("active", "done"));
 }
 
-async function runPipelineAnimation(headers, rows, source, animated) {
+async function runPipelineAnimation(animated) {
   const delay = animated ? 450 : 0;
   const wait = (ms) => new Promise(r => setTimeout(r, ms));
   const t0 = performance.now();
@@ -99,29 +107,33 @@ async function runPipelineAnimation(headers, rows, source, animated) {
   resetSteps();
   setStepState("extract", "active");
   if (animated) await wait(delay);
-  renderLogLine(t("pipeline.log.extract", { rows: rows.length, source }));
+  renderLogLine(t("pipeline.log.extract", { rows: currentActuals.length, source: currentSource }));
   setStepState("extract", "done");
 
   setStepState("validate", "active");
   if (animated) await wait(delay);
-  const checks = runQualityChecks(headers, rows);
+  const { finance, inventory } = buildEnrichedDataset(currentActuals, currentMaster, currentInventoryRaw, currentOps);
+  currentFinance = finance;
+  currentInventory = inventory;
+  const checks = runQualityChecks(currentActualsHeaders, currentActuals, finance);
   lastQualityChecks = checks;
   renderQualityChecks(checks);
   const failed = checks.filter(c => !c.passed).length;
   renderLogLine(failed === 0
-    ? t("pipeline.log.validate.ok", { n: REQUIRED_COLUMNS.length })
+    ? t("pipeline.log.validate.ok", { n: REQUIRED_ACTUALS_COLUMNS.length })
     : t("pipeline.log.validate.fail", { n: failed }));
   setStepState("validate", "done");
 
   setStepState("transform", "active");
   if (animated) await wait(delay);
-  const report = computeReport(rows);
+  const report = computeReport(finance, inventory);
   currentReport = report;
   renderLogLine(t("pipeline.log.transform", { cc: report.kpis.costCenterCount }));
   setStepState("transform", "done");
 
   setStepState("load", "active");
   if (animated) await wait(delay);
+  loadAllTables({ actuals: currentActuals, master: currentMaster, inventory: currentInventoryRaw, ops: currentOps, finance: currentFinance });
   renderDashboard(report);
   renderRuleBasedInsights(report);
   document.getElementById("sqlInput").value = SQL_DEFAULT_QUERY;
@@ -132,34 +144,49 @@ async function runPipelineAnimation(headers, rows, source, animated) {
   const ms = Math.round(performance.now() - t0);
   renderLogLine(t("pipeline.log.done", { ms: animated ? ms : "<1" }));
 
-  document.getElementById("pipelineStatus").textContent = t("pipeline.status.loaded", { rows: rows.length, source });
+  document.getElementById("pipelineStatus").textContent = t("pipeline.status.loaded", { rows: currentActuals.length, source: currentSource });
 }
 
-function loadDataset(text, source, animated) {
-  const { headers, rows } = parseCSV(text);
-  currentHeaders = headers;
-  currentRows = rows;
+function loadDataset({ actualsText, masterText, inventoryText, opsText }, source, animated) {
+  const actualsParsed = parseCSV(actualsText);
+  currentActualsHeaders = actualsParsed.headers;
+  currentActuals = actualsParsed.rows;
+  currentMaster = parseCSV(masterText).rows;
+  currentInventoryRaw = parseCSV(inventoryText).rows;
+  currentOps = parseCSV(opsText).rows;
   currentSource = source;
-  runPipelineAnimation(headers, rows, source, animated);
+  runPipelineAnimation(animated);
 }
+
+function fetchText(path) { return fetch(path).then(r => r.text()); }
 
 document.getElementById("loadSampleBtn").addEventListener("click", () => {
-  fetch("assets/data/sample_finance_data.csv")
-    .then(r => r.text())
-    .then(text => loadDataset(text, "sample_finance_data.csv", true));
+  Promise.all([
+    fetchText("assets/data/fico_actuals.csv"),
+    fetchText("assets/data/cost_center_master.csv"),
+    fetchText("assets/data/inventory_mm.csv"),
+    fetchText("assets/data/ops_kpis.csv")
+  ]).then(([actualsText, masterText, inventoryText, opsText]) => {
+    loadDataset({ actualsText, masterText, inventoryText, opsText }, "fico_actuals.csv", true);
+  });
 });
 
 document.getElementById("csvInput").addEventListener("change", (e) => {
   const file = e.target.files[0];
-  if (!file) return;
+  if (!file || !currentMaster.length) return;
   const reader = new FileReader();
-  reader.onload = () => loadDataset(reader.result, file.name, true);
+  reader.onload = () => {
+    currentActualsHeaders = parseCSV(reader.result).headers;
+    currentActuals = parseCSV(reader.result).rows;
+    currentSource = file.name;
+    runPipelineAnimation(true);
+  };
   reader.readAsText(file);
 });
 
 document.getElementById("runPipelineBtn").addEventListener("click", () => {
-  if (!currentRows.length) return;
-  runPipelineAnimation(currentHeaders, currentRows, currentSource, true);
+  if (!currentActuals.length) return;
+  runPipelineAnimation(true);
 });
 
 // ---------- Dashboard ----------
@@ -263,9 +290,9 @@ function runSqlQuery() {
   const query = document.getElementById("sqlInput").value.trim();
   const status = document.getElementById("sqlStatus");
   const table = document.getElementById("sqlResult");
-  if (!query || !currentRows.length) return;
+  if (!query || !currentActuals.length) return;
   try {
-    const { columns, rows } = runSql(query, currentRows);
+    const { columns, rows } = runSql(query);
     status.textContent = t("sql.rows", { n: rows.length });
     status.classList.remove("bad");
     table.innerHTML = `
@@ -314,7 +341,7 @@ document.getElementById("generateInsightsBtn").addEventListener("click", async (
 
   note.textContent = t("insights.generating");
   try {
-    const ctx = buildDataContext(currentReport, currentRows.length);
+    const ctx = buildDataContext(currentReport, currentActuals.length);
     const summary = await generateExecutiveSummary(ctx, CURRENT_LANG);
     note.textContent = "";
     body.innerHTML = `
@@ -370,7 +397,7 @@ document.getElementById("chatForm").addEventListener("submit", async (e) => {
   }
 
   try {
-    const ctx = buildDataContext(currentReport, currentRows.length);
+    const ctx = buildDataContext(currentReport, currentActuals.length);
     const answer = await chatWithAssistant(text, ctx, CURRENT_LANG, chatHistory);
     thinkingEl.textContent = answer;
     chatHistory.push({ role: "user", content: text }, { role: "assistant", content: answer });
@@ -417,6 +444,11 @@ renderChatSuggestions();
 appendMessage(t("assistant.greeting"), "bot");
 updateApiKeyBtnLabel();
 
-fetch("assets/data/sample_finance_data.csv")
-  .then(r => r.text())
-  .then(text => loadDataset(text, "sample_finance_data.csv", false));
+Promise.all([
+  fetchText("assets/data/fico_actuals.csv"),
+  fetchText("assets/data/cost_center_master.csv"),
+  fetchText("assets/data/inventory_mm.csv"),
+  fetchText("assets/data/ops_kpis.csv")
+]).then(([actualsText, masterText, inventoryText, opsText]) => {
+  loadDataset({ actualsText, masterText, inventoryText, opsText }, "fico_actuals.csv", false);
+});

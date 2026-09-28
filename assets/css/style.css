@@ -154,6 +154,7 @@ button, input, textarea { font-family: inherit; }
 .check-icon { width: 16px; height: 16px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 800; }
 .quality-list li.pass .check-icon { background: var(--good-bg); color: var(--good); }
 .quality-list li.fail .check-icon { background: var(--bad-bg); color: var(--bad); }
+.check-detail { margin-top: 2px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--bad); }
 
 .automation-log { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; font-family: 'JetBrains Mono', monospace; }
 .log-line { font-size: 11.5px; color: var(--text); display: flex; gap: 8px; }
