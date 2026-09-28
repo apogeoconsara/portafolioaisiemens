@@ -1,127 +1,182 @@
-// ---------- Skills grid ----------
-function renderSkills() {
-  const grid = document.getElementById("skillsGrid");
-  grid.innerHTML = SKILLS.map(s => `
-    <div class="skill-card">
-      <span class="skill-tag">${s.tag}</span>
-      <h3>${s.title}</h3>
-      <p>${s.body}</p>
-    </div>
+// ---------- Global state ----------
+let currentHeaders = [];
+let currentRows = [];
+let currentSource = "";
+let currentReport = null;
+let activeView = "pipeline";
+let chatHistory = [];
+
+// ---------- i18n application ----------
+function applyI18n() {
+  document.documentElement.lang = CURRENT_LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
+  });
+  document.getElementById("chatInput").placeholder = t("assistant.placeholder");
+  renderTopbar();
+}
+
+function renderTopbar() {
+  document.getElementById("viewTitle").textContent = t(`${activeView}.title`);
+  document.getElementById("viewDesc").textContent = t(`${activeView}.desc`);
+}
+
+// ---------- View switching ----------
+function switchView(view) {
+  activeView = view;
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.view === view));
+  document.querySelectorAll(".view").forEach(s => s.classList.toggle("active", s.dataset.view === view));
+  renderTopbar();
+}
+
+document.getElementById("nav").addEventListener("click", (e) => {
+  const btn = e.target.closest(".nav-item");
+  if (btn) switchView(btn.dataset.view);
+});
+
+// ---------- Language toggle ----------
+document.getElementById("langToggle").addEventListener("click", (e) => {
+  const btn = e.target.closest(".lang-btn");
+  if (!btn) return;
+  setLang(btn.dataset.lang);
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === CURRENT_LANG));
+  applyI18n();
+  renderChatSuggestions();
+  if (document.getElementById("chatLog").children.length <= 1) {
+    document.getElementById("chatLog").innerHTML = "";
+    appendMessage(t("assistant.greeting"), "bot");
+  }
+  if (currentReport) {
+    renderDashboard(currentReport);
+    renderQualityChecks(lastQualityChecks || []);
+    renderRuleBasedInsights(currentReport);
+  }
+});
+
+// ---------- Pipeline: quality checks ----------
+let lastQualityChecks = [];
+function renderQualityChecks(checks) {
+  const list = document.getElementById("qualityList");
+  list.innerHTML = checks.map(c => `
+    <li class="${c.passed ? "pass" : "fail"}">
+      <span class="check-icon">${c.passed ? "✓" : "✕"}</span>
+      <span>${t(c.key, c.vars)}</span>
+    </li>
   `).join("");
 }
 
-// ---------- CSV parsing ----------
-function parseCSV(text) {
-  const lines = text.trim().split(/\r?\n/);
-  const headers = lines[0].split(",").map(h => h.trim());
-  return lines.slice(1).filter(Boolean).map(line => {
-    const cells = line.split(",");
-    const row = {};
-    headers.forEach((h, i) => {
-      const raw = (cells[i] ?? "").trim();
-      row[h] = isNaN(Number(raw)) || raw === "" ? raw : Number(raw);
-    });
-    return row;
-  });
+// ---------- Pipeline: automation log ----------
+function renderLogLine(text) {
+  const log = document.getElementById("automationLog");
+  if (log.querySelector(".muted")) log.innerHTML = "";
+  const line = document.createElement("div");
+  line.className = "log-line";
+  const time = new Date().toLocaleTimeString();
+  line.innerHTML = `<span class="log-time">${time}</span><span>${text}</span>`;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
 }
 
-// ---------- KPI + insight engine ----------
-function computeReport(rows) {
-  const months = [...new Set(rows.map(r => r.month))].sort();
-  const costCenters = [...new Set(rows.map(r => r.cost_center))];
-
-  const totalActual = rows.reduce((s, r) => s + (r.actual_usd || 0), 0);
-  const totalBudget = rows.reduce((s, r) => s + (r.budget_usd || 0), 0);
-  const overallVariancePct = ((totalActual - totalBudget) / totalBudget) * 100;
-
-  const avgProductivity = rows.reduce((s, r) => s + (r.productivity_index || 0), 0) / rows.length;
-
-  const inventoryRows = rows.filter(r => (r.inventory_target_units || 0) > 0);
-  const inventoryGapPct = inventoryRows.length
-    ? inventoryRows.reduce((s, r) => s + ((r.inventory_units - r.inventory_target_units) / r.inventory_target_units), 0) / inventoryRows.length * 100
-    : 0;
-
-  const latestMonth = months[months.length - 1];
-  const latestRows = rows.filter(r => r.month === latestMonth);
-  const latestActual = latestRows.reduce((s, r) => s + r.actual_usd, 0);
-  const latestBudget = latestRows.reduce((s, r) => s + r.budget_usd, 0);
-  const latestVariancePct = ((latestActual - latestBudget) / latestBudget) * 100;
-
-  // Budget vs actual by month
-  const budgetByMonth = months.map(m => {
-    const rs = rows.filter(r => r.month === m);
-    return {
-      month: m,
-      actual: rs.reduce((s, r) => s + r.actual_usd, 0),
-      budget: rs.reduce((s, r) => s + r.budget_usd, 0)
-    };
-  });
-
-  // Variance % by cost center (latest month)
-  const varianceByCC = costCenters.map(cc => {
-    const r = latestRows.find(x => x.cost_center === cc);
-    if (!r) return { cc, variance: 0 };
-    return { cc: `${cc} (${r.area})`, variance: ((r.actual_usd - r.budget_usd) / r.budget_usd) * 100 };
-  });
-
-  // Inventory actual vs target by cost center (latest month, only where applicable)
-  const inventoryByCC = latestRows
-    .filter(r => (r.inventory_target_units || 0) > 0)
-    .map(r => ({ cc: `${r.cost_center} (${r.area})`, actual: r.inventory_units, target: r.inventory_target_units }));
-
-  // Productivity trend by month (average across cost centers)
-  const productivityByMonth = months.map(m => {
-    const rs = rows.filter(r => r.month === m);
-    return { month: m, index: rs.reduce((s, r) => s + r.productivity_index, 0) / rs.length };
-  });
-
-  // Insights
-  const insights = [];
-  varianceByCC.forEach(v => {
-    if (v.variance > 5) insights.push({ level: "risk", text: `Sobrecosto en ${v.cc}: +${v.variance.toFixed(1)}% vs. presupuesto en ${latestMonth}. Revisar causa raíz antes del cierre.` });
-    else if (v.variance < -5) insights.push({ level: "ok", text: `Ahorro en ${v.cc}: ${v.variance.toFixed(1)}% vs. presupuesto en ${latestMonth}.` });
-  });
-  inventoryByCC.forEach(inv => {
-    const gap = ((inv.actual - inv.target) / inv.target) * 100;
-    if (gap > 10) insights.push({ level: "watch", text: `Inventario de ${inv.cc} está ${gap.toFixed(1)}% sobre el objetivo — posible riesgo de capital de trabajo inmovilizado.` });
-    else if (gap < -10) insights.push({ level: "risk", text: `Inventario de ${inv.cc} está ${Math.abs(gap).toFixed(1)}% bajo el objetivo — riesgo de quiebre de stock.` });
-  });
-  const latestProd = productivityByMonth[productivityByMonth.length - 1];
-  const firstProd = productivityByMonth[0];
-  if (latestProd && firstProd && latestProd.index < firstProd.index) {
-    insights.push({ level: "watch", text: `El índice de productividad promedio cayó de ${firstProd.index.toFixed(2)} a ${latestProd.index.toFixed(2)} entre ${firstProd.month} y ${latestProd.month}.` });
-  }
-  if (insights.length === 0) insights.push({ level: "ok", text: "No se detectaron riesgos significativos en el periodo analizado." });
-
-  return {
-    kpis: {
-      totalActual, totalBudget, overallVariancePct, avgProductivity, inventoryGapPct,
-      latestMonth, latestVariancePct
-    },
-    charts: { budgetByMonth, varianceByCC, inventoryByCC, productivityByMonth },
-    insights
-  };
+function setStepState(step, state) {
+  const el = document.querySelector(`.step[data-step="${step}"]`);
+  if (!el) return;
+  el.classList.remove("active", "done");
+  if (state) el.classList.add(state);
 }
 
-function fmtUSD(n) {
-  return "$" + Math.round(n).toLocaleString("en-US");
+function resetSteps() {
+  document.querySelectorAll(".step").forEach(el => el.classList.remove("active", "done"));
 }
 
+async function runPipelineAnimation(headers, rows, source, animated) {
+  const delay = animated ? 450 : 0;
+  const wait = (ms) => new Promise(r => setTimeout(r, ms));
+  const t0 = performance.now();
+
+  resetSteps();
+  setStepState("extract", "active");
+  if (animated) await wait(delay);
+  renderLogLine(t("pipeline.log.extract", { rows: rows.length, source }));
+  setStepState("extract", "done");
+
+  setStepState("validate", "active");
+  if (animated) await wait(delay);
+  const checks = runQualityChecks(headers, rows);
+  lastQualityChecks = checks;
+  renderQualityChecks(checks);
+  const failed = checks.filter(c => !c.passed).length;
+  renderLogLine(failed === 0
+    ? t("pipeline.log.validate.ok", { n: REQUIRED_COLUMNS.length })
+    : t("pipeline.log.validate.fail", { n: failed }));
+  setStepState("validate", "done");
+
+  setStepState("transform", "active");
+  if (animated) await wait(delay);
+  const report = computeReport(rows);
+  currentReport = report;
+  renderLogLine(t("pipeline.log.transform", { cc: report.kpis.costCenterCount }));
+  setStepState("transform", "done");
+
+  setStepState("load", "active");
+  if (animated) await wait(delay);
+  renderDashboard(report);
+  renderRuleBasedInsights(report);
+  document.getElementById("sqlInput").value = SQL_DEFAULT_QUERY;
+  runSqlQuery();
+  renderLogLine(t("pipeline.log.load"));
+  setStepState("load", "done");
+
+  const ms = Math.round(performance.now() - t0);
+  renderLogLine(t("pipeline.log.done", { ms: animated ? ms : "<1" }));
+
+  document.getElementById("pipelineStatus").textContent = t("pipeline.status.loaded", { rows: rows.length, source });
+}
+
+function loadDataset(text, source, animated) {
+  const { headers, rows } = parseCSV(text);
+  currentHeaders = headers;
+  currentRows = rows;
+  currentSource = source;
+  runPipelineAnimation(headers, rows, source, animated);
+}
+
+document.getElementById("loadSampleBtn").addEventListener("click", () => {
+  fetch("assets/data/sample_finance_data.csv")
+    .then(r => r.text())
+    .then(text => loadDataset(text, "sample_finance_data.csv", true));
+});
+
+document.getElementById("csvInput").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => loadDataset(reader.result, file.name, true);
+  reader.readAsText(file);
+});
+
+document.getElementById("runPipelineBtn").addEventListener("click", () => {
+  if (!currentRows.length) return;
+  runPipelineAnimation(currentHeaders, currentRows, currentSource, true);
+});
+
+// ---------- Dashboard ----------
 function deltaClass(pct) {
   if (Math.abs(pct) <= 3) return "good";
   if (Math.abs(pct) <= 8) return "warn";
   return "bad";
 }
 
-// ---------- Render KPIs ----------
 function renderKPIs(report) {
   const { kpis } = report;
   const row = document.getElementById("kpiRow");
   const cards = [
-    { label: "Gasto total (todo el periodo)", value: fmtUSD(kpis.totalActual), delta: `Presupuesto: ${fmtUSD(kpis.totalBudget)}`, cls: "good" },
-    { label: `Variación vs. presupuesto (${kpis.latestMonth})`, value: `${kpis.latestVariancePct.toFixed(1)}%`, delta: kpis.latestVariancePct > 0 ? "Sobre presupuesto" : "Bajo presupuesto", cls: deltaClass(kpis.latestVariancePct) },
-    { label: "Índice de productividad promedio", value: kpis.avgProductivity.toFixed(2), delta: kpis.avgProductivity >= 1 ? "Sobre meta (1.00)" : "Bajo meta (1.00)", cls: kpis.avgProductivity >= 1 ? "good" : "warn" },
-    { label: "Brecha de inventario promedio", value: `${kpis.inventoryGapPct.toFixed(1)}%`, delta: kpis.inventoryGapPct > 0 ? "Sobre objetivo" : "Bajo objetivo", cls: deltaClass(kpis.inventoryGapPct) }
+    { label: t("dashboard.kpi.spend"), value: fmtUSD(kpis.totalActual), delta: t("dashboard.kpi.spend.sub", { budget: fmtUSD(kpis.totalBudget) }), cls: "good" },
+    { label: t("dashboard.kpi.variance", { month: kpis.latestMonth }), value: `${kpis.latestVariancePct.toFixed(1)}%`, delta: kpis.latestVariancePct > 0 ? t("dashboard.kpi.variance.over") : t("dashboard.kpi.variance.under"), cls: deltaClass(kpis.latestVariancePct) },
+    { label: t("dashboard.kpi.productivity"), value: kpis.avgProductivity.toFixed(2), delta: kpis.avgProductivity >= 1 ? t("dashboard.kpi.productivity.over") : t("dashboard.kpi.productivity.under"), cls: kpis.avgProductivity >= 1 ? "good" : "warn" },
+    { label: t("dashboard.kpi.inventory"), value: `${kpis.inventoryGapPct.toFixed(1)}%`, delta: kpis.inventoryGapPct > 0 ? t("dashboard.kpi.inventory.over") : t("dashboard.kpi.inventory.under"), cls: deltaClass(kpis.inventoryGapPct) }
   ];
   row.innerHTML = cards.map(c => `
     <div class="kpi-card">
@@ -132,32 +187,19 @@ function renderKPIs(report) {
   `).join("");
 }
 
-// ---------- Render insights ----------
-function renderInsights(report) {
-  const list = document.getElementById("insightsList");
-  const labelMap = { risk: ["Riesgo", "risk"], watch: ["Atención", "watch"], ok: ["Ok", "ok"] };
-  list.innerHTML = report.insights.map(i => {
-    const [label, cls] = labelMap[i.level];
-    return `<li><span class="badge ${cls}">${label}:</span>${i.text}</li>`;
-  }).join("");
-}
-
-// ---------- Charts ----------
 let chartRefs = {};
-function destroyCharts() {
-  Object.values(chartRefs).forEach(c => c && c.destroy());
-  chartRefs = {};
-}
+function destroyCharts() { Object.values(chartRefs).forEach(c => c && c.destroy()); chartRefs = {}; }
 
 const CHART_COLORS = { accent: "#0077b6", accent2: "#0091d4", good: "#1a9c63", warn: "#b5720a", bad: "#d1373f", grid: "#e3e8f1", text: "#5a6478" };
 
 function baseOptions(extra = {}) {
   return Object.assign({
     responsive: true,
-    plugins: { legend: { labels: { color: CHART_COLORS.text } } },
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: CHART_COLORS.text, boxWidth: 12, font: { size: 11 } } } },
     scales: {
-      x: { ticks: { color: CHART_COLORS.text }, grid: { color: CHART_COLORS.grid } },
-      y: { ticks: { color: CHART_COLORS.text }, grid: { color: CHART_COLORS.grid } }
+      x: { ticks: { color: CHART_COLORS.text, font: { size: 10 } }, grid: { color: CHART_COLORS.grid } },
+      y: { ticks: { color: CHART_COLORS.text, font: { size: 10 } }, grid: { color: CHART_COLORS.grid } }
     }
   }, extra);
 }
@@ -171,8 +213,8 @@ function renderCharts(report) {
     data: {
       labels: budgetByMonth.map(b => b.month),
       datasets: [
-        { label: "Actual", data: budgetByMonth.map(b => b.actual), borderColor: CHART_COLORS.accent, backgroundColor: "transparent", tension: 0.3 },
-        { label: "Presupuesto", data: budgetByMonth.map(b => b.budget), borderColor: CHART_COLORS.text, backgroundColor: "transparent", borderDash: [6, 4], tension: 0.3 }
+        { label: t("dashboard.legend.actual"), data: budgetByMonth.map(b => b.actual), borderColor: CHART_COLORS.accent, backgroundColor: "transparent", tension: 0.3 },
+        { label: t("dashboard.legend.budget"), data: budgetByMonth.map(b => b.budget), borderColor: CHART_COLORS.text, backgroundColor: "transparent", borderDash: [6, 4], tension: 0.3 }
       ]
     },
     options: baseOptions()
@@ -181,12 +223,8 @@ function renderCharts(report) {
   chartRefs.variance = new Chart(document.getElementById("chartVariance"), {
     type: "bar",
     data: {
-      labels: varianceByCC.map(v => v.cc),
-      datasets: [{
-        label: "Variación %",
-        data: varianceByCC.map(v => v.variance),
-        backgroundColor: varianceByCC.map(v => v.variance > 5 ? CHART_COLORS.bad : v.variance < -5 ? CHART_COLORS.good : CHART_COLORS.accent2)
-      }]
+      labels: varianceByCC.map(v => v.ccLabel),
+      datasets: [{ data: varianceByCC.map(v => v.variance), backgroundColor: varianceByCC.map(v => v.variance > 5 ? CHART_COLORS.bad : v.variance < -5 ? CHART_COLORS.good : CHART_COLORS.accent2) }]
     },
     options: baseOptions({ plugins: { legend: { display: false } } })
   });
@@ -194,10 +232,10 @@ function renderCharts(report) {
   chartRefs.inventory = new Chart(document.getElementById("chartInventory"), {
     type: "bar",
     data: {
-      labels: inventoryByCC.map(i => i.cc),
+      labels: inventoryByCC.map(i => i.ccLabel),
       datasets: [
-        { label: "Actual", data: inventoryByCC.map(i => i.actual), backgroundColor: CHART_COLORS.accent },
-        { label: "Objetivo", data: inventoryByCC.map(i => i.target), backgroundColor: CHART_COLORS.text }
+        { label: t("dashboard.legend.actual"), data: inventoryByCC.map(i => i.actual), backgroundColor: CHART_COLORS.accent },
+        { label: t("dashboard.legend.target"), data: inventoryByCC.map(i => i.target), backgroundColor: CHART_COLORS.text }
       ]
     },
     options: baseOptions()
@@ -207,57 +245,91 @@ function renderCharts(report) {
     type: "line",
     data: {
       labels: productivityByMonth.map(p => p.month),
-      datasets: [{ label: "Índice de productividad", data: productivityByMonth.map(p => p.index), borderColor: CHART_COLORS.good, backgroundColor: "rgba(53,209,138,0.15)", fill: true, tension: 0.3 }]
+      datasets: [{ data: productivityByMonth.map(p => p.index), borderColor: CHART_COLORS.good, backgroundColor: "rgba(26,156,99,0.12)", fill: true, tension: 0.3 }]
     },
     options: baseOptions({ plugins: { legend: { display: false } } })
   });
 }
 
-// ---------- Pipeline ----------
-function runPipeline(csvText, sourceLabel) {
+function renderDashboard(report) {
+  renderKPIs(report);
+  renderCharts(report);
+}
+
+// ---------- SQL Explorer ----------
+document.getElementById("sqlInput").value = SQL_DEFAULT_QUERY;
+
+function runSqlQuery() {
+  const query = document.getElementById("sqlInput").value.trim();
+  const status = document.getElementById("sqlStatus");
+  const table = document.getElementById("sqlResult");
+  if (!query || !currentRows.length) return;
   try {
-    const rows = parseCSV(csvText);
-    if (!rows.length) throw new Error("CSV vacío");
-    const report = computeReport(rows);
-    renderKPIs(report);
-    renderCharts(report);
-    renderInsights(report);
-    document.getElementById("dataStatus").textContent = `Datos cargados: ${sourceLabel} (${rows.length} filas)`;
-  } catch (e) {
-    document.getElementById("dataStatus").textContent = `Error procesando CSV: ${e.message}`;
+    const { columns, rows } = runSql(query, currentRows);
+    status.textContent = t("sql.rows", { n: rows.length });
+    status.classList.remove("bad");
+    table.innerHTML = `
+      <thead><tr>${columns.map(c => `<th>${c}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map(r => `<tr>${columns.map(c => `<td>${r[c]}</td>`).join("")}</tr>`).join("")}</tbody>
+    `;
+  } catch (err) {
+    status.textContent = t("sql.error", { msg: err.message });
+    status.classList.add("bad");
+    table.innerHTML = "";
   }
 }
 
-document.getElementById("loadSampleBtn").addEventListener("click", () => {
-  fetch("assets/data/sample_finance_data.csv")
-    .then(r => r.text())
-    .then(text => runPipeline(text, "sample_finance_data.csv"));
-});
-
-document.getElementById("csvInput").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => runPipeline(reader.result, file.name);
-  reader.readAsText(file);
-});
-
-// ---------- Chatbot ----------
-function normalize(s) {
-  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-}
-
-function findAnswer(userText) {
-  const norm = normalize(userText);
-  let best = null;
-  let bestScore = 0;
-  CHAT_RESPONSES.forEach(entry => {
-    const score = entry.keywords.filter(k => norm.includes(normalize(k))).length;
-    if (score > bestScore) { bestScore = score; best = entry; }
+document.getElementById("runSqlBtn").addEventListener("click", runSqlQuery);
+document.querySelectorAll(".chip[data-sql]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("sqlInput").value = SQL_EXAMPLES[btn.dataset.sql];
+    runSqlQuery();
   });
-  return best ? best.answer : CHAT_FALLBACK;
+});
+
+// ---------- Insights ----------
+function renderRuleBasedInsights(report) {
+  const body = document.getElementById("insightsBody");
+  const note = document.getElementById("insightsNote");
+  note.textContent = getApiKey() ? "" : t("insights.fallbackNote");
+  const labelKey = { risk: "insights.risk", watch: "insights.watch", ok: "insights.ok" };
+  body.innerHTML = `
+    <h3 class="insights-heading">${t("insights.rule.title")}</h3>
+    <ul class="insights-list">
+      ${report.insights.map(i => `<li><span class="badge ${i.level}">${t(labelKey[i.level])}:</span> ${t(i.key, i.vars)}</li>`).join("")}
+    </ul>
+  `;
 }
 
+document.getElementById("generateInsightsBtn").addEventListener("click", async () => {
+  if (!currentReport) return;
+  const note = document.getElementById("insightsNote");
+  const body = document.getElementById("insightsBody");
+
+  if (!getApiKey()) {
+    note.textContent = t("insights.fallbackNote");
+    renderRuleBasedInsights(currentReport);
+    return;
+  }
+
+  note.textContent = t("insights.generating");
+  try {
+    const ctx = buildDataContext(currentReport, currentRows.length);
+    const summary = await generateExecutiveSummary(ctx, CURRENT_LANG);
+    note.textContent = "";
+    body.innerHTML = `
+      <h3 class="insights-heading">${t("insights.ai.title")}</h3>
+      <ul class="insights-list ai">
+        ${summary.split("\n").filter(l => l.trim()).map(l => `<li>${l.replace(/^-\s*/, "")}</li>`).join("")}
+      </ul>
+    `;
+  } catch (err) {
+    note.textContent = t("insights.error", { msg: err.message });
+    renderRuleBasedInsights(currentReport);
+  }
+});
+
+// ---------- Assistant ----------
 function appendMessage(text, who) {
   const log = document.getElementById("chatLog");
   const div = document.createElement("div");
@@ -265,11 +337,14 @@ function appendMessage(text, who) {
   div.textContent = text;
   log.appendChild(div);
   log.scrollTop = log.scrollHeight;
+  return div;
 }
 
 function renderChatSuggestions() {
   const box = document.getElementById("chatSuggestions");
-  const prompts = ["¿Experiencia con SAP?", "¿Qué haces en Power BI?", "¿Cómo automatizas procesos?", "¿Manejas SQL?"];
+  const prompts = CURRENT_LANG === "es"
+    ? ["¿Dónde está el mayor riesgo de variación?", "¿Riesgo de inventario?", "¿Cómo automatiza el pipeline?", "Muéstrame una consulta SQL"]
+    : ["Where is the biggest variance risk?", "Any inventory risk?", "How does the pipeline automate this?", "Show me a SQL query"];
   box.innerHTML = prompts.map(p => `<button type="button" class="chip">${p}</button>`).join("");
   box.querySelectorAll(".chip").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -279,17 +354,69 @@ function renderChatSuggestions() {
   });
 }
 
-document.getElementById("chatForm").addEventListener("submit", (e) => {
+document.getElementById("chatForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
-  if (!text) return;
+  if (!text || !currentReport) return;
   appendMessage(text, "user");
   input.value = "";
-  setTimeout(() => appendMessage(findAnswer(text), "bot"), 250);
+
+  const thinkingEl = appendMessage(t("assistant.thinking"), "bot");
+
+  if (!getApiKey()) {
+    thinkingEl.textContent = answerFallback(text, currentReport, CURRENT_LANG);
+    return;
+  }
+
+  try {
+    const ctx = buildDataContext(currentReport, currentRows.length);
+    const answer = await chatWithAssistant(text, ctx, CURRENT_LANG, chatHistory);
+    thinkingEl.textContent = answer;
+    chatHistory.push({ role: "user", content: text }, { role: "assistant", content: answer });
+    if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+  } catch (err) {
+    thinkingEl.textContent = `${t("assistant.error", { msg: err.message })}\n\n${answerFallback(text, currentReport, CURRENT_LANG)}`;
+  }
+});
+
+// ---------- API key modal ----------
+const apiKeyModal = document.getElementById("apiKeyModal");
+
+function updateApiKeyBtnLabel() {
+  document.getElementById("apiKeyBtnLabel").textContent = getApiKey() ? t("sidebar.apiKeyOn") : t("sidebar.apiKey");
+  document.getElementById("apiKeyBtn").classList.toggle("connected", !!getApiKey());
+}
+
+document.getElementById("apiKeyBtn").addEventListener("click", () => {
+  document.getElementById("apiKeyInput").value = getApiKey() || "";
+  apiKeyModal.classList.add("open");
+});
+document.getElementById("apiKeyCloseBtn").addEventListener("click", () => apiKeyModal.classList.remove("open"));
+apiKeyModal.addEventListener("click", (e) => { if (e.target === apiKeyModal) apiKeyModal.classList.remove("open"); });
+
+document.getElementById("apiKeySaveBtn").addEventListener("click", () => {
+  const key = document.getElementById("apiKeyInput").value.trim();
+  const remember = document.getElementById("apiKeyRemember").checked;
+  setApiKey(key, remember);
+  updateApiKeyBtnLabel();
+  if (currentReport) renderRuleBasedInsights(currentReport);
+  apiKeyModal.classList.remove("open");
+});
+
+document.getElementById("apiKeyClearBtn").addEventListener("click", () => {
+  clearApiKey();
+  document.getElementById("apiKeyInput").value = "";
+  updateApiKeyBtnLabel();
+  if (currentReport) renderRuleBasedInsights(currentReport);
 });
 
 // ---------- Init ----------
-renderSkills();
+applyI18n();
 renderChatSuggestions();
-appendMessage("Hola, soy el asistente de este portafolio. Pregúntame sobre SAP, Power BI, automatización o mi experiencia en Finance & Controlling.", "bot");
+appendMessage(t("assistant.greeting"), "bot");
+updateApiKeyBtnLabel();
+
+fetch("assets/data/sample_finance_data.csv")
+  .then(r => r.text())
+  .then(text => loadDataset(text, "sample_finance_data.csv", false));
