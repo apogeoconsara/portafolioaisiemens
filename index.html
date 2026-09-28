@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio Digital Finance &amp; Analytics | Sarah Cruz</title>
+<meta name="description" content="Herramienta interactiva que demuestra automatización de procesos Finance/Controlling, pipelines SAP, dashboards Power BI/Tableau y un asistente conversacional, alineados a la posición Digital Finance Business Partner en Siemens Energy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="assets/vendor/chart.umd.min.js"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-mark">SE</span>
+      <div>
+        <p class="brand-name">Sarah Cruz Salazar</p>
+        <p class="brand-role">Digital Finance &amp; Business Analytics</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#skills">Habilidades</a>
+      <a href="#dashboard">Dashboard automatizado</a>
+      <a href="#assistant">Asistente IA</a>
+      <a href="#fit">Fit con la vacante</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Postulación · Siemens Energy · Digital Finance</p>
+      <h1>Automatizo procesos de Finance &amp; Controlling y los convierto en insights ejecutivos.</h1>
+      <p class="lead">
+        Esta página no es solo un portafolio: es una herramienta funcional. Sube o simula datos tipo SAP FI/CO,
+        genera un dashboard de KPIs financieros y operativos en segundos, y conversa con un asistente que explica
+        cómo aplico cada requisito de la posición a proyectos reales.
+      </p>
+      <div class="hero-actions">
+        <a href="#dashboard" class="btn btn-primary">Ver generador automatizado de reportes</a>
+        <a href="#assistant" class="btn btn-ghost">Hablar con el asistente</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><span class="stat-num">4+</span><span class="stat-label">años en Finance / BI / Automatización</span></div>
+      <div class="stat-card"><span class="stat-num">SAP</span><span class="stat-label">FI/CO · data pipelines</span></div>
+      <div class="stat-card"><span class="stat-num">Power BI</span><span class="stat-label">/ Tableau / Alteryx / SQL</span></div>
+    </div>
+  </section>
+
+  <section id="skills" class="section">
+    <div class="wrap">
+      <h2>Habilidades mapeadas a la posición</h2>
+      <p class="section-sub">Cada requisito del job post, con la evidencia concreta de esta misma página.</p>
+      <div class="skills-grid" id="skillsGrid"></div>
+    </div>
+  </section>
+
+  <section id="dashboard" class="section alt">
+    <div class="wrap">
+      <h2>Generador automatizado de reportes</h2>
+      <p class="section-sub">
+        Simula una extracción de SAP FI/CO por centro de costo. Carga tu propio CSV con las mismas columnas
+        o usa el set de ejemplo — el motor calcula variaciones vs. presupuesto, riesgos e insights automáticamente,
+        sin intervención manual.
+      </p>
+
+      <div class="dashboard-controls">
+        <button id="loadSampleBtn" class="btn btn-primary">Usar datos de ejemplo</button>
+        <label class="file-btn">
+          Cargar CSV propio
+          <input type="file" id="csvInput" accept=".csv" hidden>
+        </label>
+        <span id="dataStatus" class="data-status">Sin datos cargados</span>
+      </div>
+
+      <div id="kpiRow" class="kpi-row"></div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Actual vs. Presupuesto por mes</h3>
+          <canvas id="chartBudget"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Variación % por centro de costo</h3>
+          <canvas id="chartVariance"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Inventario: actual vs. objetivo</h3>
+          <canvas id="chartInventory"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Índice de productividad</h3>
+          <canvas id="chartProductivity"></canvas>
+        </div>
+      </div>
+
+      <div class="insights-card">
+        <h3>Insights generados automáticamente</h3>
+        <ul id="insightsList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="assistant" class="section">
+    <div class="wrap">
+      <h2>Asistente de Digital Finance</h2>
+      <p class="section-sub">
+        Chatbot de reglas que responde preguntas frecuentes de un hiring manager sobre mi experiencia,
+        herramientas y forma de trabajar. Pensado como demo de "user enablement" y automatización de FAQs.
+      </p>
+      <div class="chat-window">
+        <div id="chatLog" class="chat-log"></div>
+        <div class="chat-suggestions" id="chatSuggestions"></div>
+        <form id="chatForm" class="chat-form">
+          <input id="chatInput" type="text" autocomplete="off" placeholder="Pregunta sobre SAP, Power BI, automatización, SQL...">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="fit" class="section alt">
+    <div class="wrap">
+      <h2>Por qué esto responde al "Snapshot of Your Day"</h2>
+      <div class="fit-grid">
+        <div class="fit-item">
+          <h3>Automatización de procesos manuales</h3>
+          <p>El generador de reportes reemplaza un cálculo manual de variaciones presupuestales por un flujo de un clic, igual que automatizar un cierre de Controlling.</p>
+        </div>
+        <div class="fit-item">
+          <h3>Pipelines de datos conectados a SAP</h3>
+          <p>La estructura del CSV imita una extracción FI/CO (centro de costo, actual, budget, inventario) — el mismo esquema que gobernaría un pipeline real.</p>
+        </div>
+        <div class="fit-item">
+          <h3>Dashboards ejecutivos</h3>
+          <p>Los 4 gráficos cubren desempeño financiero, productividad, inventario y costos — los mismos pilares que Power BI / Tableau visualizarían para Finance.</p>
+        </div>
+        <div class="fit-item">
+          <h3>Insights de riesgo y tendencias</h3>
+          <p>El motor de insights marca automáticamente sobrecostos, quiebres de inventario y caídas de productividad, priorizando lo que un director necesita ver primero.</p>
+        </div>
+        <div class="fit-item">
+          <h3>User enablement</h3>
+          <p>El asistente conversacional es un ejemplo reducido de cómo entreno usuarios y resuelvo dudas sobre herramientas digitales sin intervención manual repetida.</p>
+        </div>
+        <div class="fit-item">
+          <h3>Gobierno de datos</h3>
+          <p>Toda columna del set de ejemplo tiene un dueño claro (Finance, Supply Chain, IT) — reflejo de los estándares de calidad y ownership que exige la vacante.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>Sarah Cruz Salazar · sarahicruzsalazar@gmail.com</p>
+    <p class="muted">Herramienta construida como parte de mi postulación a Siemens Energy — Digital Finance.</p>
+  </div>
+</footer>
+
+<script src="assets/js/skills-data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
