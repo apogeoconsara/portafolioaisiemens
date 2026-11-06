@@ -1,0 +1,4 @@
+role 'Area Supply Chain'
+	modelPermission: read
+
+	tablePermission cost_center_master = cost_center_master[kostl_group] = "SCM"

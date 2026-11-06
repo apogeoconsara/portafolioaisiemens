@@ -1,0 +1,59 @@
+table inventory_mm
+	measure Stock = SUM(inventory_mm[labst])
+		formatString: #,0
+
+	measure 'Punto de reorden' = SUM(inventory_mm[minbe])
+		formatString: #,0
+
+	measure 'Lineas bajo reorden' = COUNTROWS(FILTER(inventory_mm, inventory_mm[labst] <= inventory_mm[minbe]))
+		formatString: 0
+
+	column gjahr
+		dataType: int64
+		sourceColumn: gjahr
+		summarizeBy: none
+
+	column poper
+		dataType: int64
+		sourceColumn: poper
+		summarizeBy: none
+
+	column werks
+		dataType: string
+		sourceColumn: werks
+		summarizeBy: none
+
+	column lgort
+		dataType: string
+		sourceColumn: lgort
+		summarizeBy: none
+
+	column matnr
+		dataType: string
+		sourceColumn: matnr
+		summarizeBy: none
+
+	column material_desc
+		dataType: string
+		sourceColumn: material_desc
+		summarizeBy: none
+
+	column labst
+		dataType: double
+		sourceColumn: labst
+		summarizeBy: sum
+
+	column minbe
+		dataType: double
+		sourceColumn: minbe
+		summarizeBy: sum
+
+	partition inventory_mm = m
+		mode: import
+		source =
+			let
+			    Source = Csv.Document(File.Contents(DataFolder & "inventory_mm.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			    Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"werks", type text}, {"lgort", type text}, {"matnr", type text}, {"material_desc", type text}, {"labst", type number}, {"minbe", type number}}, "en-US")
+			in
+			    Typed

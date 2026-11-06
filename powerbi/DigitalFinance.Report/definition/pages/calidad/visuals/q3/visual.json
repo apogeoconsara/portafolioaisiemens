@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "q3",
+  "position": {
+    "x": 860,
+    "y": 20,
+    "width": 400,
+    "height": 110,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "inventory_mm"
+                    }
+                  },
+                  "Property": "Lineas bajo reorden"
+                }
+              },
+              "queryRef": "inventory_mm.Lineas bajo reorden",
+              "nativeQueryRef": "Lineas bajo reorden"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'L\u00edneas de stock en o bajo reorden'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

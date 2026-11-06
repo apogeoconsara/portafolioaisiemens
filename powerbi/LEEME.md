@@ -1,0 +1,35 @@
+# Power BI – Digital Finance
+
+Proyecto de Power BI (formato PBIP) con los datos del portafolio.
+
+> Se generó sin Power BI Desktop y **no se ha abierto aún en él**. Si algo no abre o falla,
+> copia el mensaje de error y se corrige.
+
+## Cómo abrirlo
+1. Power BI Desktop → Archivo → Opciones → Características en versión preliminar → activa
+   **"Guardar con formato de proyecto de Power BI (.pbip)"** y **"Formato de metadatos de informe de Power BI (PBIR)"**. Reinicia.
+2. Copia la carpeta `datos` a una ruta fija, p. ej. `C:\Datos\`.
+3. Abre `DigitalFinance.pbip`. Si pide la ruta: Transformar datos → parámetro **DataFolder** → pon la carpeta (con `\` final).
+4. Actualizar. Después: Archivo → Guardar como → **.pbix** para tener un archivo único.
+5. Tema opcional: Vista → Temas → Examinar temas → `tema_finanzas.json`.
+
+## Qué trae
+**Modelo:** fico_actuals, cost_center_master, ops_kpis, inventory_mm; relaciones por centro de costo.
+
+**Medidas:** Real, Plan, Variacion, Variacion %, Real YTD, Plan YTD, Variacion YTD %,
+Productividad, Stock, Punto de reorden, Lineas bajo reorden, y de calidad de datos:
+Partidas sin maestro, Gasto en bloqueados. `Color variacion` devuelve un color hex (verde / ámbar / rojo)
+para formato condicional.
+
+**Seguridad por fila (RLS):** roles `Area Manufactura` y `Area Supply Chain` (filtran por grupo de centro de costo).
+Pruébalos en Modelado → Ver como. Los accesos reales se asignan en el servicio de Power BI.
+
+**Página 1 · Resumen financiero:** segmentadores (periodo, grupo), 4 tarjetas, 4 gráficas.
+**Página 2 · Calidad de datos y controles:** 3 tarjetas de hallazgos, tabla de centros de costo y acumulado del año.
+
+## Formato condicional del semáforo (1 minuto)
+Tarjeta o columna "Variación %" → Formato → Color de fuente → fx → "Valor de campo" → medida `Color variacion`.
+
+## Nota sobre los datos
+El centro de costo 4009000 no está en el maestro (aparece en blanco / "sin maestro") y el 4004000 está
+BLOCKED: son hallazgos de calidad de datos intencionales de la muestra.

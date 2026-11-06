@@ -49,7 +49,30 @@ single flat spreadsheet:
   governance findings above. Answered by Claude when an API key is connected, otherwise by
   a deterministic automation-logic fallback.
 
+- **Digital Finance Roadmap** — 10 initiatives scored by business value ÷ effort, plotted on a
+  value/effort chart, grouped into delivery waves, with owners/users and live evidence pulled
+  from the loaded dataset (e.g. the unmastered and blocked cost centers found by the pipeline).
+- **Controls & Documentation** — an 11-control matrix (7 automated controls show live
+  pass/exception status from the last pipeline run, 4 manual/planned), a KPI glossary with
+  formulas, thresholds and the matching Power BI measure, and data ownership with lineage.
+- **Automation & Impact** — the pipeline drawn as an Alteryx-style workflow, plus an editable
+  impact model (hours, FTE capacity and cost avoided). Timings are illustrative assumptions.
+- **User Enablement** — quick start, role guide, FAQ, training plan and adoption targets;
+  prints to PDF.
+
 Available in English and Spanish (toggle in the sidebar).
+
+## Deliverables (`entregables/`) and Power BI project (`powerbi/`)
+
+- `entregables/Digital_Finance_Analisis.xlsx` — Excel workbook on the same data: live
+  `SUMIFS`/`INDEX-MATCH` formulas, a period selector, traffic-light variance, YTD, inventory
+  status and the 7 data controls. Open it, change the yellow cell on `Resumen`, and every sheet
+  responds. Assumptions and thresholds are on `Supuestos`.
+- `entregables/Guia_de_usuario.pdf` — Spanish user guide generated from the User Enablement tab.
+- `entregables/PowerBI_DigitalFinance.zip` and `powerbi/` — a Power BI Project (PBIP): semantic
+  model (4 tables, relationships, measures incl. YTD, data-quality and conditional-format colors,
+  two row-level-security roles) and a 2-page report. See `powerbi/LEEME.md` to open it.
+  **It was generated without Power BI Desktop and has not been opened in it yet.**
 
 ## Using the Claude API tabs
 

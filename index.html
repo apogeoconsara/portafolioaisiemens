@@ -45,6 +45,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4L21 20l-4.3-1.1a8.5 8.5 0 1 1 4.3-7.4Z"/></svg>
         <span data-i18n="nav.assistant"></span>
       </button>
+      <button class="nav-item" data-view="roadmap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="18" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg>
+        <span data-i18n="nav.roadmap"></span>
+      </button>
+      <button class="nav-item" data-view="controls">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        <span data-i18n="nav.controls"></span>
+      </button>
+      <button class="nav-item" data-view="automation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="4" width="6" height="5" rx="1"/><rect x="9" y="15" width="6" height="5" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg>
+        <span data-i18n="nav.automation"></span>
+      </button>
+      <button class="nav-item" data-view="enablement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 3 5 3s5-1.8 5-3v-4.5"/></svg>
+        <span data-i18n="nav.enablement"></span>
+      </button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -145,6 +161,94 @@
         </div>
       </section>
 
+
+      <!-- ROADMAP -->
+      <section class="view" data-view="roadmap">
+        <div class="kpi-row" id="roadmapKpis"></div>
+        <div class="roadmap-grid">
+          <div class="chart-card chart-tall"><h3 data-i18n="roadmap.chart.title"></h3><canvas id="chartRoadmap"></canvas><div class="status-legend" id="roadmapLegend"></div></div>
+          <div class="panel panel-flush">
+            <h3 data-i18n="roadmap.table.title"></h3>
+            <div class="chip-row" id="roadmapFilters"></div>
+            <div class="table-wrap"><table class="gov-table" id="roadmapTable"></table></div>
+            <p class="muted fineprint" data-i18n="roadmap.method"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTROLS -->
+      <section class="view" data-view="controls">
+        <div class="chip-row" id="controlsTabs">
+          <button class="chip" data-ctab="matrix" data-i18n="controls.tab.matrix"></button>
+          <button class="chip" data-ctab="kpis" data-i18n="controls.tab.kpis"></button>
+          <button class="chip" data-ctab="ownership" data-i18n="controls.tab.ownership"></button>
+        </div>
+        <div id="controlsBody">
+          <div data-ctab="matrix">
+            <div class="kpi-row" id="controlsKpis"></div>
+            <div class="table-wrap"><table class="gov-table" id="controlsTable"></table></div>
+          </div>
+          <div data-ctab="kpis" hidden>
+            <div class="table-wrap"><table class="gov-table" id="kpiTable"></table></div>
+          </div>
+          <div data-ctab="ownership" hidden>
+            <div class="table-wrap"><table class="gov-table" id="ownerTable"></table></div>
+            <div class="panel lineage-panel">
+              <h3 data-i18n="own.lineage.title"></h3>
+              <div class="lineage" id="lineage"></div>
+              <p class="muted fineprint" data-i18n="own.lineage.note"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUTOMATION -->
+      <section class="view" data-view="automation">
+        <div class="panel">
+          <h3 data-i18n="automation.workflow.title"></h3>
+          <div id="workflowSvg" class="workflow"></div>
+          <p class="muted fineprint" data-i18n="automation.workflow.note"></p>
+        </div>
+        <div class="panel impact-panel">
+          <h3 data-i18n="automation.impact.title"></h3>
+          <p class="muted fineprint" data-i18n="automation.impact.note"></p>
+          <div class="impact-grid">
+            <div id="impactInputs"></div>
+            <div>
+              <div class="kpi-row kpi-row-3" id="impactOutputs"></div>
+              <div class="chart-card chart-short"><h3 data-i18n="automation.chart.title"></h3><canvas id="chartImpact"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENABLEMENT -->
+      <section class="view" data-view="enablement">
+        <div class="controls-row no-print">
+          <button id="printGuideBtn" class="btn btn-ghost" data-i18n="enablement.print"></button>
+        </div>
+        <div class="enable-grid">
+          <div class="panel">
+            <h3 data-i18n="enablement.quick.title"></h3>
+            <ol class="quick-start" id="quickStart"></ol>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="enablement.roles.title"></h3>
+            <div class="table-wrap"><table class="gov-table compact" id="roleTable"></table></div>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="enablement.faq.title"></h3>
+            <div id="faqList"></div>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="enablement.training.title"></h3>
+            <div class="table-wrap"><table class="gov-table compact" id="trainingTable"></table></div>
+            <h3 class="sub-h" data-i18n="enablement.adoption.title"></h3>
+            <div class="table-wrap"><table class="gov-table compact" id="adoptionTable"></table></div>
+            <p class="muted fineprint" data-i18n="enablement.note"></p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 </div>
@@ -154,6 +258,8 @@
 <script src="assets/js/sql-engine.js"></script>
 <script src="assets/js/ai.js"></script>
 <script src="assets/js/assistant-fallback.js"></script>
+<script src="assets/js/governance-data.js"></script>
+<script src="assets/js/governance.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

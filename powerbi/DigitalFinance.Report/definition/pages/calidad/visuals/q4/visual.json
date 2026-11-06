@@ -1,0 +1,142 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "q4",
+  "position": {
+    "x": 20,
+    "y": 150,
+    "width": 1240,
+    "height": 300,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "cost_center_master"
+                    }
+                  },
+                  "Property": "kostl"
+                }
+              },
+              "queryRef": "cost_center_master.kostl",
+              "nativeQueryRef": "kostl"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "cost_center_master"
+                    }
+                  },
+                  "Property": "kostl_name"
+                }
+              },
+              "queryRef": "cost_center_master.kostl_name",
+              "nativeQueryRef": "kostl_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "cost_center_master"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "cost_center_master.status",
+              "nativeQueryRef": "status"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Real"
+                }
+              },
+              "queryRef": "fico_actuals.Real",
+              "nativeQueryRef": "Real"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Plan"
+                }
+              },
+              "queryRef": "fico_actuals.Plan",
+              "nativeQueryRef": "Plan"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Variacion %"
+                }
+              },
+              "queryRef": "fico_actuals.Variacion %",
+              "nativeQueryRef": "Variacion %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Real YTD"
+                }
+              },
+              "queryRef": "fico_actuals.Real YTD",
+              "nativeQueryRef": "Real YTD"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Centros de costo: estado y variaci\u00f3n'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

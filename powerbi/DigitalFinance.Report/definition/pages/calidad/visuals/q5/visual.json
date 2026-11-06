@@ -1,0 +1,90 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "q5",
+  "position": {
+    "x": 20,
+    "y": 465,
+    "width": 1240,
+    "height": 235,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "poper"
+                }
+              },
+              "queryRef": "fico_actuals.poper",
+              "nativeQueryRef": "poper"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Real YTD"
+                }
+              },
+              "queryRef": "fico_actuals.Real YTD",
+              "nativeQueryRef": "Real YTD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Plan YTD"
+                }
+              },
+              "queryRef": "fico_actuals.Plan YTD",
+              "nativeQueryRef": "Plan YTD"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Acumulado del a\u00f1o: real vs. plan'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

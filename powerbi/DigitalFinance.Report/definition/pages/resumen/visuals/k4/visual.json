@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "k4",
+  "position": {
+    "x": 950,
+    "y": 85,
+    "width": 290,
+    "height": 100,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ops_kpis"
+                    }
+                  },
+                  "Property": "Productividad"
+                }
+              },
+              "queryRef": "ops_kpis.Productividad",
+              "nativeQueryRef": "Productividad"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Productividad'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

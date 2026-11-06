@@ -1,0 +1,38 @@
+table ops_kpis
+	measure Productividad = AVERAGE(ops_kpis[productivity_index])
+		formatString: 0.00
+
+	column gjahr
+		dataType: int64
+		sourceColumn: gjahr
+		summarizeBy: none
+
+	column poper
+		dataType: int64
+		sourceColumn: poper
+		summarizeBy: none
+
+	column kostl
+		dataType: string
+		sourceColumn: kostl
+		summarizeBy: none
+
+	column productivity_index
+		dataType: double
+		sourceColumn: productivity_index
+		summarizeBy: sum
+
+	column headcount
+		dataType: int64
+		sourceColumn: headcount
+		summarizeBy: none
+
+	partition ops_kpis = m
+		mode: import
+		source =
+			let
+			    Source = Csv.Document(File.Contents(DataFolder & "ops_kpis.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			    Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"kostl", type text}, {"productivity_index", type number}, {"headcount", Int64.Type}}, "en-US")
+			in
+			    Typed

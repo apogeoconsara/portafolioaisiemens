@@ -1,0 +1,46 @@
+table cost_center_master
+
+	column kokrs
+		dataType: string
+		sourceColumn: kokrs
+		summarizeBy: none
+
+	column bukrs
+		dataType: string
+		sourceColumn: bukrs
+		summarizeBy: none
+
+	column kostl
+		dataType: string
+		sourceColumn: kostl
+		summarizeBy: none
+
+	column kostl_name
+		dataType: string
+		sourceColumn: kostl_name
+		summarizeBy: none
+
+	column kostl_group
+		dataType: string
+		sourceColumn: kostl_group
+		summarizeBy: none
+
+	column werks
+		dataType: string
+		sourceColumn: werks
+		summarizeBy: none
+
+	column status
+		dataType: string
+		sourceColumn: status
+		summarizeBy: none
+
+	partition cost_center_master = m
+		mode: import
+		source =
+			let
+			    Source = Csv.Document(File.Contents(DataFolder & "cost_center_master.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			    Typed = Table.TransformColumnTypes(Headers, {{"kokrs", type text}, {"bukrs", type text}, {"kostl", type text}, {"kostl_name", type text}, {"kostl_group", type text}, {"werks", type text}, {"status", type text}}, "en-US")
+			in
+			    Typed

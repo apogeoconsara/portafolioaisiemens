@@ -1,0 +1,7 @@
+relationship fico_to_cc
+	fromColumn: fico_actuals.kostl
+	toColumn: cost_center_master.kostl
+
+relationship ops_to_cc
+	fromColumn: ops_kpis.kostl
+	toColumn: cost_center_master.kostl

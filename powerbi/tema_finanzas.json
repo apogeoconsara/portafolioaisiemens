@@ -1,0 +1,14 @@
+{
+  "name": "Finanzas",
+  "dataColors": [
+    "#0077b6",
+    "#6b7a90",
+    "#1a9c63",
+    "#d1373f",
+    "#b5720a",
+    "#0091d4"
+  ],
+  "background": "#ffffff",
+  "foreground": "#1f2937",
+  "tableAccent": "#0077b6"
+}
