@@ -25,6 +25,7 @@
     </div>
 
     <nav class="nav" id="nav">
+      <p class="nav-section" data-i18n="nav.sec.analyze"></p>
       <button class="nav-item active" data-view="pipeline">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v14c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
         <span data-i18n="nav.pipeline"></span>
@@ -45,6 +46,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4L21 20l-4.3-1.1a8.5 8.5 0 1 1 4.3-7.4Z"/></svg>
         <span data-i18n="nav.assistant"></span>
       </button>
+      <p class="nav-section" data-i18n="nav.sec.manage"></p>
       <button class="nav-item" data-view="roadmap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="18" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg>
         <span data-i18n="nav.roadmap"></span>
@@ -57,6 +59,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="4" width="6" height="5" rx="1"/><rect x="9" y="15" width="6" height="5" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg>
         <span data-i18n="nav.automation"></span>
       </button>
+      <p class="nav-section" data-i18n="nav.sec.share"></p>
       <button class="nav-item" data-view="enablement">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 3 5 3s5-1.8 5-3v-4.5"/></svg>
         <span data-i18n="nav.enablement"></span>
@@ -64,6 +67,10 @@
     </nav>
 
     <div class="sidebar-bottom">
+      <button class="download-cta" id="goDownloads" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+        <span data-i18n="cta.download"></span>
+      </button>
       <div class="lang-toggle" id="langToggle">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="es">ES</button>
@@ -164,7 +171,6 @@
 
       <!-- ROADMAP -->
       <section class="view" data-view="roadmap">
-        <div class="kpi-row" id="roadmapKpis"></div>
         <div class="roadmap-grid">
           <div class="chart-card chart-tall"><h3 data-i18n="roadmap.chart.title"></h3><canvas id="chartRoadmap"></canvas><div class="status-legend" id="roadmapLegend"></div></div>
           <div class="panel panel-flush">
@@ -185,7 +191,7 @@
         </div>
         <div id="controlsBody">
           <div data-ctab="matrix">
-            <div class="kpi-row" id="controlsKpis"></div>
+            <p class="summary-line" id="controlsSummary"></p>
             <div class="table-wrap"><table class="gov-table" id="controlsTable"></table></div>
           </div>
           <div data-ctab="kpis" hidden>
@@ -224,8 +230,33 @@
 
       <!-- ENABLEMENT -->
       <section class="view" data-view="enablement">
-        <div class="controls-row no-print">
-          <button id="printGuideBtn" class="btn btn-ghost" data-i18n="enablement.print"></button>
+        <div class="downloads" id="downloads">
+          <div class="download-card">
+            <div class="dl-icon">BI</div>
+            <h3 data-i18n="dl.pbi.title"></h3>
+            <p data-i18n="dl.pbi.desc"></p>
+            <a class="btn btn-primary" href="entregables/PowerBI_DigitalFinance.zip" download data-i18n="dl.button.zip"></a>
+            <details class="dl-how">
+              <summary data-i18n="dl.pbi.how"></summary>
+              <ol>
+                <li data-i18n="dl.pbi.s1"></li>
+                <li data-i18n="dl.pbi.s2"></li>
+                <li data-i18n="dl.pbi.s3"></li>
+              </ol>
+            </details>
+          </div>
+          <div class="download-card">
+            <div class="dl-icon dl-xlsx">XL</div>
+            <h3 data-i18n="dl.xlsx.title"></h3>
+            <p data-i18n="dl.xlsx.desc"></p>
+            <a class="btn btn-primary" href="entregables/Digital_Finance_Analisis.xlsx" download data-i18n="dl.button.xlsx"></a>
+          </div>
+          <div class="download-card">
+            <div class="dl-icon dl-pdf">PDF</div>
+            <h3 data-i18n="dl.pdf.title"></h3>
+            <p data-i18n="dl.pdf.desc"></p>
+            <a class="btn btn-primary" href="entregables/Guia_de_usuario.pdf" download data-i18n="dl.button.pdf"></a>
+          </div>
         </div>
         <div class="enable-grid">
           <div class="panel">
@@ -233,19 +264,12 @@
             <ol class="quick-start" id="quickStart"></ol>
           </div>
           <div class="panel">
-            <h3 data-i18n="enablement.roles.title"></h3>
-            <div class="table-wrap"><table class="gov-table compact" id="roleTable"></table></div>
-          </div>
-          <div class="panel">
             <h3 data-i18n="enablement.faq.title"></h3>
             <div id="faqList"></div>
           </div>
-          <div class="panel">
-            <h3 data-i18n="enablement.training.title"></h3>
-            <div class="table-wrap"><table class="gov-table compact" id="trainingTable"></table></div>
-            <h3 class="sub-h" data-i18n="enablement.adoption.title"></h3>
-            <div class="table-wrap"><table class="gov-table compact" id="adoptionTable"></table></div>
-            <p class="muted fineprint" data-i18n="enablement.note"></p>
+          <div class="panel panel-wide">
+            <h3 data-i18n="enablement.roles.title"></h3>
+            <div class="table-wrap"><table class="gov-table compact" id="roleTable"></table></div>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-// Renderers for Roadmap, Controls & Documentation, Automation & Impact and User Enablement.
+// Renderers for Roadmap, Controls & Documentation, Automation & Impact and Guide & Downloads.
 // Depends on: I18N/t/CURRENT_LANG (i18n.js), governance-data.js, Chart.js, and the
 // pipeline globals declared in app.js (read lazily at render time).
 
@@ -64,16 +64,6 @@ const statusBadge = (s) => `<span class="pill pill-${s}">${t("status." + s)}</sp
 // ---------- Roadmap ----------
 function renderRoadmap() {
   const items = rankedRoadmap();
-  const quick = items.filter(r => quadrantOf(r) === "quick").length;
-  const active = items.filter(r => r.status === "live" || r.status === "progress").length;
-  const nextUp = items.filter(r => r.status !== "live" && quadrantOf(r) === "quick").length;
-
-  document.getElementById("roadmapKpis").innerHTML = [
-    [t("roadmap.kpi.total"), items.length],
-    [t("roadmap.kpi.quick"), quick],
-    [t("roadmap.kpi.active"), active],
-    [t("roadmap.kpi.next"), nextUp]
-  ].map(([l, v]) => `<div class="kpi-card"><div class="kpi-label">${l}</div><div class="kpi-value">${v}</div></div>`).join("");
 
   const waves = ["all", "now", "alongside", "next", "later"];
   document.getElementById("roadmapFilters").innerHTML = waves.map(w =>
@@ -82,20 +72,17 @@ function renderRoadmap() {
   const rows = items.filter(r => roadmapFilter === "all" || waveOf(r) === roadmapFilter);
   document.getElementById("roadmapTable").innerHTML = `
     <thead><tr>
-      <th class="num">${t("roadmap.col.rank")}</th><th>${t("roadmap.col.initiative")}</th><th>${t("roadmap.col.stakeholders")}</th>
-      <th class="num">${t("roadmap.col.value")}</th><th class="num">${t("roadmap.col.effort")}</th><th class="num">${t("roadmap.col.score")}</th>
-      <th>${t("roadmap.col.wave")}</th><th>${t("roadmap.col.status")}</th><th>${t("roadmap.col.evidence")}</th>
+      <th class="num">${t("roadmap.col.rank")}</th><th>${t("roadmap.col.initiative")}</th>
+      <th class="num">${t("roadmap.col.value")}</th><th class="num">${t("roadmap.col.effort")}</th>
+      <th>${t("roadmap.col.wave")}</th><th>${t("roadmap.col.status")}</th>
     </tr></thead>
     <tbody>${rows.map(r => `
       <tr>
         <td class="num">${items.indexOf(r) + 1}</td>
-        <td class="strong">${esc(LV(r.name))}</td>
-        <td>${esc(LV(r.who))}</td>
+        <td><div class="strong">${esc(LV(r.name))}</div><div class="sub">${esc(roadmapEvidence(r))}</div></td>
         <td class="num">${r.value}</td><td class="num">${r.effort}</td>
-        <td class="num strong">${scoreOf(r).toFixed(1)}</td>
         <td><span class="pill pill-wave-${waveOf(r)}">${t("wave." + waveOf(r))}</span></td>
         <td>${statusBadge(r.status)}</td>
-        <td class="wrap">${esc(roadmapEvidence(r))}</td>
       </tr>`).join("")}</tbody>`;
 
   renderRoadmapChart(items);
@@ -167,47 +154,43 @@ function renderControls() {
   document.querySelectorAll("#controlsTabs .chip").forEach(b => b.classList.toggle("chip-active", b.dataset.ctab === controlsTab));
   document.querySelectorAll("#controlsBody > [data-ctab]").forEach(el => el.hidden = el.dataset.ctab !== controlsTab);
 
-  // matrix
   const statuses = CONTROLS.map(controlStatus);
-  const auto = CONTROLS.filter(c => c.mode === "auto").length;
   const pass = statuses.filter(s => s.s === "pass").length;
   const fail = statuses.filter(s => s.s === "fail").length;
-  document.getElementById("controlsKpis").innerHTML = [
-    [t("controls.sum.total"), CONTROLS.length, ""],
-    [t("controls.sum.auto"), `${auto} / ${CONTROLS.length}`, ""],
-    [t("controls.sum.pass"), pass, "good"],
-    [t("controls.sum.fail"), fail, fail ? "bad" : "good"]
-  ].map(([l, v, cls]) => `<div class="kpi-card"><div class="kpi-label">${l}</div><div class="kpi-value ${cls ? "v-" + cls : ""}">${v}</div></div>`).join("");
+  document.getElementById("controlsSummary").innerHTML =
+    `<span class="v-good">${t("controls.sum.pass", { n: pass })}</span><span class="dot">·</span>` +
+    `<span class="${fail ? "v-bad" : "v-good"}">${t("controls.sum.fail", { n: fail })}</span><span class="dot">·</span>` +
+    `<span>${t("controls.sum.total", { n: CONTROLS.length })}</span>`;
 
   document.getElementById("controlsTable").innerHTML = `
-    <thead><tr>${["id", "control", "objective", "source", "type", "mode", "freq", "owner", "evidence", "status"].map(k => `<th class="${["id","type","mode","freq"].includes(k) ? "nw" : ""}">${t("controls.col." + k)}</th>`).join("")}</tr></thead>
+    <thead><tr><th class="nw">${t("controls.col.id")}</th><th>${t("controls.col.control")}</th><th>${t("controls.col.type")}</th>
+      <th>${t("controls.col.freq")}</th><th>${t("controls.col.owner")}</th><th>${t("controls.col.status")}</th></tr></thead>
     <tbody>${CONTROLS.map((c, i) => {
       const st = statuses[i];
       return `<tr>
-        <td class="mono nw">${c.id}</td><td class="strong">${esc(LV(c.name))}</td><td class="wrap">${esc(LV(c.objective))}</td>
-        <td class="mono wrap">${esc(c.source)}</td><td class="nw">${t("type." + c.type)}</td><td class="nw">${t("mode." + c.mode)}</td>
-        <td class="nw">${esc(LV(c.freq))}</td><td>${esc(LV(c.owner))}</td><td class="wrap">${esc(LV(c.evidence))}</td>
+        <td class="mono nw">${c.id}</td>
+        <td><div class="strong">${esc(LV(c.name))}</div><div class="sub">${esc(LV(c.objective))}</div></td>
+        <td>${t("type." + c.type)} · ${t("mode." + c.mode)}</td>
+        <td>${esc(LV(c.freq))}</td><td>${esc(LV(c.owner))}</td>
         <td><span class="pill pill-c-${st.s}">${t("cstatus." + st.s)}</span>${st.detail ? `<div class="check-detail">${esc(t("controls.exception", { detail: st.detail }))}</div>` : ""}</td>
       </tr>`;
     }).join("")}</tbody>`;
 
-  // KPI glossary
   document.getElementById("kpiTable").innerHTML = `
-    <thead><tr>${["name", "definition", "formula", "source", "owner", "refresh", "threshold", "dax"].map(k => `<th>${t("kpi.col." + k)}</th>`).join("")}</tr></thead>
+    <thead><tr>${["name", "definition", "formula", "threshold", "owner"].map(k => `<th>${t("kpi.col." + k)}</th>`).join("")}</tr></thead>
     <tbody>${KPI_GLOSSARY.map(k => `<tr>
-      <td class="strong">${esc(LV(k.name))}</td><td class="wrap">${esc(LV(k.def))}</td><td class="mono wrap">${esc(k.formula)}</td>
-      <td>${esc(k.source)}</td><td>${esc(LV(k.owner))}</td><td>${esc(LV(k.refresh))}</td><td class="wrap">${esc(LV(k.threshold))}</td><td class="mono">${esc(k.dax)}</td>
+      <td class="strong">${esc(LV(k.name))}</td><td>${esc(LV(k.def))}</td><td class="mono">${esc(k.formula)}</td>
+      <td>${esc(LV(k.threshold))}</td><td>${esc(LV(k.owner))}</td>
     </tr>`).join("")}</tbody>`;
 
-  // Ownership
   document.getElementById("ownerTable").innerHTML = `
-    <thead><tr>${["dataset", "system", "object", "owner", "steward", "refresh", "class", "rows"].map(k => `<th>${t("own.col." + k)}</th>`).join("")}</tr></thead>
+    <thead><tr>${["dataset", "system", "owner", "refresh", "rows"].map(k => `<th class="${k === "rows" ? "num" : ""}">${t("own.col." + k)}</th>`).join("")}</tr></thead>
     <tbody>${OWNERSHIP.map(o => `<tr>
-      <td class="mono strong">${o.dataset}</td><td>${esc(LV(o.system))}</td><td>${esc(LV(o.object))}</td><td>${esc(LV(o.owner))}</td>
-      <td>${esc(LV(o.steward))}</td><td>${esc(LV(o.refresh))}</td><td>${esc(LV(o.cls))}</td><td class="num">${o.rows()}</td>
+      <td class="mono strong">${o.dataset}</td><td>${esc(LV(o.system))}</td><td>${esc(LV(o.owner))}</td>
+      <td>${esc(LV(o.refresh))}</td><td class="num">${o.rows()}</td>
     </tr>`).join("")}</tbody>`;
 
-  const hops = ["SAP / ops systems", "Pipeline (extract · validate · transform)", "Governed dataset", "Dashboard · SQL · Power BI", CURRENT_LANG === "es" ? "Decisión de Finanzas" : "Finance decision"];
+  const hops = [t("own.hop.1"), t("own.hop.2"), t("own.hop.3"), t("own.hop.4")];
   document.getElementById("lineage").innerHTML = hops.map(h => `<span class="hop">${esc(h)}</span>`).join('<span class="hop-arrow">→</span>');
 }
 
@@ -329,17 +312,9 @@ function renderEnablement() {
 
   document.getElementById("roleTable").innerHTML = `
     <thead><tr><th>${t("enablement.col.role")}</th><th>${t("enablement.col.use")}</th><th>${t("enablement.col.question")}</th></tr></thead>
-    <tbody>${ROLE_GUIDE.map(r => `<tr><td class="strong">${esc(LV(r.role))}</td><td>${esc(LV(r.tab))}</td><td class="wrap">${esc(LV(r.q))}</td></tr>`).join("")}</tbody>`;
+    <tbody>${ROLE_GUIDE.map(r => `<tr><td class="strong">${esc(LV(r.role))}</td><td>${esc(LV(r.tab))}</td><td>${esc(LV(r.q))}</td></tr>`).join("")}</tbody>`;
 
   document.getElementById("faqList").innerHTML = FAQ.map(f => `<details class="faq"><summary>${esc(LV(f.q))}</summary><p>${esc(LV(f.a))}</p></details>`).join("");
-
-  document.getElementById("trainingTable").innerHTML = `
-    <thead><tr><th>${t("enablement.col.session")}</th><th>${t("enablement.col.audience")}</th><th>${t("enablement.col.duration")}</th><th>${t("enablement.col.outcome")}</th></tr></thead>
-    <tbody>${TRAINING.map(s => `<tr><td class="strong">${esc(LV(s.s))}</td><td>${esc(LV(s.aud))}</td><td>${esc(s.dur)}</td><td class="wrap">${esc(LV(s.out))}</td></tr>`).join("")}</tbody>`;
-
-  document.getElementById("adoptionTable").innerHTML = `
-    <thead><tr><th>${t("enablement.col.kpi")}</th><th>${t("enablement.col.target")}</th><th>${t("enablement.col.how")}</th></tr></thead>
-    <tbody>${ADOPTION.map(a => `<tr><td class="strong">${esc(LV(a.k))}</td><td>${esc(a.target)}</td><td class="wrap">${esc(LV(a.how))}</td></tr>`).join("")}</tbody>`;
 }
 
 // ---------- Entry point + events ----------
@@ -370,4 +345,7 @@ document.getElementById("impactInputs").addEventListener("input", (e) => {
   else impactState[el.dataset.key] = v;
   updateImpactOutputs();
 });
-document.getElementById("printGuideBtn").addEventListener("click", () => window.print());
+document.getElementById("goDownloads").addEventListener("click", () => {
+  switchView("enablement");
+  document.getElementById("downloads").scrollIntoView({ behavior: "smooth", block: "start" });
+});
