@@ -12,7 +12,7 @@ const I18N = {
     "sidebar.footer": "Automation demo for the Siemens Energy Digital Finance role",
 
     "pipeline.title": "SAP FI/CO Data Pipeline",
-    "pipeline.desc": "Joins a SAP FI/CO actual/plan extract (BUKRS, KOKRS, GJAHR/POPER, KOSTL, KSTAR) against cost-center master data, an MM inventory extract, and a non-SAP ops KPI feed. No manual spreadsheet work.",
+    "pipeline.desc": "Loads four SAP-style extracts, checks them for problems and prepares them for the dashboard.",
     "pipeline.loadSample": "Load sample SAP extract",
     "pipeline.run": "Run pipeline",
     "pipeline.step.extract": "Extract",
@@ -43,7 +43,7 @@ const I18N = {
     "pipeline.log.done": "Pipeline completed in {{ms}} ms — 0 manual steps",
 
     "dashboard.title": "Financial & operational KPIs",
-    "dashboard.desc": "Same dataset published by the pipeline, ready as an executive dashboard.",
+    "dashboard.desc": "Key financial and operational numbers at a glance.",
     "dashboard.kpi.spend": "Total spend (period)",
     "dashboard.kpi.spend.sub": "Budget: {{budget}}",
     "dashboard.kpi.variance": "Budget variance ({{month}})",
@@ -65,7 +65,7 @@ const I18N = {
     "dashboard.noData": "Load data from the Data Pipeline tab to populate this dashboard.",
 
     "sql.title": "SQL Explorer",
-    "sql.desc": "Run SQL directly against the raw SAP-style tables (fico_actuals, cost_center_master, inventory_mm, ops_kpis) or the joined finance view. No BI tool required to inspect the numbers.",
+    "sql.desc": "Ask questions of the data with SQL to check any number yourself.",
     "sql.run": "Run query",
     "sql.rows": "{{n}} row(s)",
     "sql.error": "Query error: {{msg}}",
@@ -76,7 +76,7 @@ const I18N = {
     "sql.example.productivity": "Avg productivity by area",
 
     "insights.title": "AI executive summary",
-    "insights.desc": "Sends the computed KPIs to Claude and asks for a board-ready summary. Without an API key, a deterministic rule-based summary is shown instead — the automation logic works either way.",
+    "insights.desc": "A short management summary of the numbers. Works with or without an AI key.",
     "insights.generate": "Generate with Claude",
     "insights.generating": "Asking Claude for an executive summary...",
     "insights.fallbackNote": "No Claude API key connected — showing the deterministic rule-based summary.",
@@ -96,7 +96,7 @@ const I18N = {
     "insights.text.none": "No significant risks detected in the analyzed period.",
 
     "assistant.title": "AI assistant",
-    "assistant.desc": "Grounded in the dataset currently loaded. Answered by Claude when an API key is connected, otherwise by a deterministic automation-logic fallback.",
+    "assistant.desc": "Ask questions about the loaded data.",
     "assistant.placeholder": "Ask about variance, inventory risk, SQL, the pipeline...",
     "assistant.send": "Send",
     "assistant.greeting": "Ask me about the loaded dataset — budget variance, inventory risk, the automation pipeline, or how to query it with SQL.",
@@ -116,7 +116,7 @@ const I18N = {
     "sidebar.footer": "Demo de automatización para la posición Digital Finance en Siemens Energy",
 
     "pipeline.title": "Pipeline de datos SAP FI/CO",
-    "pipeline.desc": "Cruza un extracto de actuals/plan SAP FI/CO (BUKRS, KOKRS, GJAHR/POPER, KOSTL, KSTAR) con el maestro de centros de costo, un extracto de inventario MM y una fuente de KPIs de operaciones (no-SAP). Sin trabajo manual en hojas de cálculo.",
+    "pipeline.desc": "Carga cuatro extractos tipo SAP, los revisa y los prepara para el dashboard.",
     "pipeline.loadSample": "Cargar extracto SAP de ejemplo",
     "pipeline.run": "Ejecutar pipeline",
     "pipeline.step.extract": "Extraer",
@@ -147,7 +147,7 @@ const I18N = {
     "pipeline.log.done": "Pipeline completado en {{ms}} ms — 0 pasos manuales",
 
     "dashboard.title": "KPIs financieros y operativos",
-    "dashboard.desc": "El mismo dataset publicado por el pipeline, listo como dashboard ejecutivo.",
+    "dashboard.desc": "Las cifras financieras y operativas clave de un vistazo.",
     "dashboard.kpi.spend": "Gasto total (periodo)",
     "dashboard.kpi.spend.sub": "Presupuesto: {{budget}}",
     "dashboard.kpi.variance": "Variación vs. presupuesto ({{month}})",
@@ -169,7 +169,7 @@ const I18N = {
     "dashboard.noData": "Carga datos desde la pestaña Pipeline de Datos para llenar este dashboard.",
 
     "sql.title": "Explorador SQL",
-    "sql.desc": "Ejecuta SQL directamente sobre las tablas crudas estilo SAP (fico_actuals, cost_center_master, inventory_mm, ops_kpis) o sobre la vista finance ya cruzada. No necesitas una herramienta de BI para inspeccionar los números.",
+    "sql.desc": "Consulta los datos con SQL para comprobar cualquier cifra por tu cuenta.",
     "sql.run": "Ejecutar consulta",
     "sql.rows": "{{n}} fila(s)",
     "sql.error": "Error en la consulta: {{msg}}",
@@ -180,7 +180,7 @@ const I18N = {
     "sql.example.productivity": "Productividad promedio por área",
 
     "insights.title": "Resumen ejecutivo con IA",
-    "insights.desc": "Envía los KPIs calculados a Claude y pide un resumen listo para directorio. Sin API key, se muestra un resumen determinístico basado en reglas — la lógica de automatización funciona en ambos casos.",
+    "insights.desc": "Un resumen breve para la dirección. Funciona con o sin clave de IA.",
     "insights.generate": "Generar con Claude",
     "insights.generating": "Pidiendo a Claude un resumen ejecutivo...",
     "insights.fallbackNote": "No hay una API key de Claude conectada — se muestra el resumen determinístico basado en reglas.",
@@ -200,7 +200,7 @@ const I18N = {
     "insights.text.none": "No se detectaron riesgos significativos en el periodo analizado.",
 
     "assistant.title": "Asistente IA",
-    "assistant.desc": "Basado en el dataset cargado actualmente. Responde Claude cuando hay una API key conectada; si no, responde la lógica de automatización determinística.",
+    "assistant.desc": "Haz preguntas sobre los datos cargados.",
     "assistant.placeholder": "Pregunta sobre variación, riesgo de inventario, SQL, el pipeline...",
     "assistant.send": "Enviar",
     "assistant.greeting": "Pregúntame sobre el dataset cargado: variación presupuestal, riesgo de inventario, el pipeline de automatización o cómo consultarlo con SQL.",

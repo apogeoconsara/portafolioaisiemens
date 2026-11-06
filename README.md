@@ -57,18 +57,22 @@ single flat spreadsheet:
   formulas, thresholds and the matching Power BI measure, and data ownership with lineage.
 - **Automation & Impact** — the pipeline drawn as an Alteryx-style workflow, plus an editable
   impact model (hours, FTE capacity and cost avoided). Timings are illustrative assumptions.
-- **User Enablement** — quick start, role guide, FAQ, training plan and adoption targets;
-  prints to PDF.
+- **Guide & Downloads** — download buttons for the Power BI project, the Excel workbook and
+  the user guide, plus a quick start, role guide and FAQ. The same "Download files" button is
+  always visible in the sidebar.
 
 Available in English and Spanish (toggle in the sidebar).
 
 ## Deliverables (`entregables/`) and Power BI project (`powerbi/`)
 
+All three files can be downloaded from the **Guide & Downloads** tab of the published site
+(they are served as static files from `entregables/`).
+
 - `entregables/Digital_Finance_Analisis.xlsx` — Excel workbook on the same data: live
   `SUMIFS`/`INDEX-MATCH` formulas, a period selector, traffic-light variance, YTD, inventory
   status and the 7 data controls. Open it, change the yellow cell on `Resumen`, and every sheet
   responds. Assumptions and thresholds are on `Supuestos`.
-- `entregables/Guia_de_usuario.pdf` — Spanish user guide generated from the User Enablement tab.
+- `entregables/Guia_de_usuario.pdf` — Spanish user guide generated from the Guide & Downloads tab.
 - `entregables/PowerBI_DigitalFinance.zip` and `powerbi/` — a Power BI Project (PBIP): semantic
   model (4 tables, relationships, measures incl. YTD, data-quality and conditional-format colors,
   two row-level-security roles) and a 2-page report. See `powerbi/LEEME.md` to open it.
