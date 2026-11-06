@@ -2,8 +2,10 @@
 
 Proyecto de Power BI (formato PBIP) con los datos del portafolio.
 
-> Se generó sin Power BI Desktop y **no se ha abierto aún en él**. Si algo no abre o falla,
-> copia el mensaje de error y se corrige.
+> Se generó sin Power BI Desktop. Todos sus archivos JSON se validaron contra los esquemas
+> oficiales de Microsoft, pero **no se ha abierto aún en Power BI Desktop**. Si algo falla,
+> copia el mensaje de error (botón "Copiar los detalles al Portapapeles") y se corrige.
+> Importante: **extrae todo el zip** antes de abrir `DigitalFinance.pbip`.
 
 ## Cómo abrirlo
 1. Power BI Desktop → Archivo → Opciones → Características en versión preliminar → activa

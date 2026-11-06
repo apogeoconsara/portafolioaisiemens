@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "DigitalFinance"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "488e407b-4f08-58d3-84fc-7207e22e08a3"
+  }
+}
