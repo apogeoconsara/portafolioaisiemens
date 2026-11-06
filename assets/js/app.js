@@ -59,6 +59,7 @@ document.getElementById("langToggle").addEventListener("click", (e) => {
     renderQualityChecks(lastQualityChecks || []);
     renderRuleBasedInsights(currentReport);
   }
+  renderGovernance();
 });
 
 // ---------- Pipeline: quality checks ----------
@@ -139,6 +140,7 @@ async function runPipelineAnimation(animated) {
   document.getElementById("sqlInput").value = SQL_DEFAULT_QUERY;
   runSqlQuery();
   renderLogLine(t("pipeline.log.load"));
+  renderGovernance();
   setStepState("load", "done");
 
   const ms = Math.round(performance.now() - t0);
@@ -396,6 +398,7 @@ document.getElementById("chatForm").addEventListener("submit", async (e) => {
 
 // ---------- Init ----------
 applyI18n();
+renderGovernance();
 renderChatSuggestions();
 appendMessage(t("assistant.greeting"), "bot");
 

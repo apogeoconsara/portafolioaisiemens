@@ -1,0 +1,90 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "g3",
+  "position": {
+    "x": 20,
+    "y": 455,
+    "width": 620,
+    "height": 245,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "inventory_mm"
+                    }
+                  },
+                  "Property": "werks"
+                }
+              },
+              "queryRef": "inventory_mm.werks",
+              "nativeQueryRef": "werks"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "inventory_mm"
+                    }
+                  },
+                  "Property": "Stock"
+                }
+              },
+              "queryRef": "inventory_mm.Stock",
+              "nativeQueryRef": "Stock"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "inventory_mm"
+                    }
+                  },
+                  "Property": "Punto de reorden"
+                }
+              },
+              "queryRef": "inventory_mm.Punto de reorden",
+              "nativeQueryRef": "Punto de reorden"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Inventario vs. punto de reorden por planta'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

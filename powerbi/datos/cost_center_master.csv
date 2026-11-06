@@ -1,0 +1,5 @@
+kokrs,bukrs,kostl,kostl_name,kostl_group,werks,status
+1000,1000,4001000,Machining & Assembly,MFG,1010,ACTIVE
+1000,1000,4002000,Warehousing & Logistics,SCM,1020,ACTIVE
+1000,1000,4003000,Finance & Controlling,FICO,1000,ACTIVE
+1000,1000,4004000,IT & Digital Services,ITD,1000,BLOCKED

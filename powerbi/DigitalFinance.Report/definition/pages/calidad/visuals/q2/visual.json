@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "q2",
+  "position": {
+    "x": 440,
+    "y": 20,
+    "width": 400,
+    "height": 110,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Gasto en bloqueados"
+                }
+              },
+              "queryRef": "fico_actuals.Gasto en bloqueados",
+              "nativeQueryRef": "Gasto en bloqueados"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Gasto en centros bloqueados'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
