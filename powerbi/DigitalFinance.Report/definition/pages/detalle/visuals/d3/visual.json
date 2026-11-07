@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "d3",
+  "position": {
+    "x": 340,
+    "y": 365,
+    "width": 920,
+    "height": 335,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "kstar_name"
+                }
+              },
+              "queryRef": "fico_actuals.kstar_name",
+              "nativeQueryRef": "kstar_name"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fico_actuals"
+                    }
+                  },
+                  "Property": "Variacion"
+                }
+              },
+              "queryRef": "fico_actuals.Variacion",
+              "nativeQueryRef": "Variacion"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Variaci\u00f3n ($) por elemento de costo'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

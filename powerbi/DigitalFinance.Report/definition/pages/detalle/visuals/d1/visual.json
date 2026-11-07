@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "d1",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "width": 300,
+    "height": 680,
+    "z": 0
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "cost_center_master"
+                    }
+                  },
+                  "Property": "kostl_name"
+                }
+              },
+              "queryRef": "cost_center_master.kostl_name",
+              "nativeQueryRef": "kostl_name"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Centro de costo'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

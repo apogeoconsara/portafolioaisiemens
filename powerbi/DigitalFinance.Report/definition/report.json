@@ -6,8 +6,26 @@
       "name": "CY24SU10",
       "reportVersionAtImport": "5.61",
       "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Finanzas.json",
+      "reportVersionAtImport": "5.61",
+      "type": "RegisteredResources"
     }
   },
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Finanzas.json",
+          "path": "Finanzas.json",
+          "type": "CustomTheme"
+        }
+      ]
+    }
+  ],
   "settings": {
     "useStylableVisualContainerHeader": true
   }
