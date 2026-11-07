@@ -52,8 +52,8 @@ table inventory_mm
 		mode: import
 		source =
 			let
-			    Source = Csv.Document(File.Contents(DataFolder & "inventory_mm.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-			    Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"werks", type text}, {"lgort", type text}, {"matnr", type text}, {"material_desc", type text}, {"labst", type number}, {"minbe", type number}}, "en-US")
+				Source = Csv.Document(File.Contents(DataFolder & "inventory_mm.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"werks", type text}, {"lgort", type text}, {"matnr", type text}, {"material_desc", type text}, {"labst", type number}, {"minbe", type number}}, "en-US")
 			in
-			    Typed
+				Typed

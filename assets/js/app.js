@@ -33,11 +33,11 @@ function renderTopbar() {
 function switchView(view) {
   activeView = view;
   document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.view === view));
-  document.querySelectorAll(".view").forEach(s => s.classList.toggle("active", s.dataset.view === view));
+  document.querySelectorAll(".view").forEach(s => s.classList.toggle("active", s.dataset.group === view));
   renderTopbar();
 }
 
-document.getElementById("nav").addEventListener("click", (e) => {
+document.querySelector(".topnav").addEventListener("click", (e) => {
   const btn = e.target.closest(".nav-item");
   if (btn) switchView(btn.dataset.view);
 });

@@ -31,8 +31,8 @@ table ops_kpis
 		mode: import
 		source =
 			let
-			    Source = Csv.Document(File.Contents(DataFolder & "ops_kpis.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-			    Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"kostl", type text}, {"productivity_index", type number}, {"headcount", Int64.Type}}, "en-US")
+				Source = Csv.Document(File.Contents(DataFolder & "ops_kpis.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Typed = Table.TransformColumnTypes(Headers, {{"gjahr", Int64.Type}, {"poper", Int64.Type}, {"kostl", type text}, {"productivity_index", type number}, {"headcount", Int64.Type}}, "en-US")
 			in
-			    Typed
+				Typed

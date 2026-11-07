@@ -3,7 +3,8 @@
 Proyecto de Power BI (formato PBIP) con los datos del portafolio.
 
 > Se generó sin Power BI Desktop. Todos sus archivos JSON se validaron contra los esquemas
-> oficiales de Microsoft, pero **no se ha abierto aún en Power BI Desktop**. Si algo falla,
+> oficiales de Microsoft y el modelo se revisó campo por campo (tablas, relaciones, medidas y
+> gráficas), pero **no se ha abierto aún en Power BI Desktop**. Si algo falla,
 > copia el mensaje de error (botón "Copiar los detalles al Portapapeles") y se corrige.
 > Importante: **extrae todo el zip** antes de abrir `DigitalFinance.pbip`.
 
@@ -16,7 +17,7 @@ Proyecto de Power BI (formato PBIP) con los datos del portafolio.
 5. Tema opcional: Vista → Temas → Examinar temas → `tema_finanzas.json`.
 
 ## Qué trae
-**Modelo:** fico_actuals, cost_center_master, ops_kpis, inventory_mm; relaciones por centro de costo.
+**Modelo:** fico_actuals, cost_center_master, ops_kpis, inventory_mm y una tabla `Periodo` (1–12). Los datos se relacionan por centro de costo y por periodo, así que el segmentador de periodo filtra todas las gráficas.
 
 **Medidas:** Real, Plan, Variacion, Variacion %, Real YTD, Plan YTD, Variacion YTD %,
 Productividad, Stock, Punto de reorden, Lineas bajo reorden, y de calidad de datos:
@@ -26,7 +27,7 @@ para formato condicional.
 **Seguridad por fila (RLS):** roles `Area Manufactura` y `Area Supply Chain` (filtran por grupo de centro de costo).
 Pruébalos en Modelado → Ver como. Los accesos reales se asignan en el servicio de Power BI.
 
-**Página 1 · Resumen financiero:** segmentadores (periodo, grupo), 4 tarjetas, 4 gráficas.
+**Página 1 · Resumen financiero:** segmentador de periodo, 4 tarjetas, 4 gráficas.
 **Página 2 · Calidad de datos y controles:** 3 tarjetas de hallazgos, tabla de centros de costo y acumulado del año.
 
 ## Formato condicional del semáforo (1 minuto)

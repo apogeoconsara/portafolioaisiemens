@@ -1,0 +1,17 @@
+table Periodo
+
+	column poper
+		dataType: int64
+		isKey
+		sourceColumn: poper
+		summarizeBy: none
+
+	partition Periodo = m
+		mode: import
+		source =
+			let
+				Source = List.Numbers(1, 12),
+				AsTable = Table.FromList(Source, Splitter.SplitByNothing(), {"poper"}, null, ExtraValues.Error),
+				Typed = Table.TransformColumnTypes(AsTable, {{"poper", Int64.Type}})
+			in
+				Typed

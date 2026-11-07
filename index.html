@@ -15,83 +15,44 @@
 
 <div class="app-shell">
 
-  <aside class="sidebar">
+  <header class="topnav">
     <div class="brand">
       <span class="brand-mark">DF</span>
-      <div class="brand-copy">
-        <p class="brand-name" data-i18n="app.title"></p>
-        <p class="brand-sub" data-i18n="app.subtitle"></p>
-      </div>
+      <p class="brand-name" data-i18n="app.title"></p>
     </div>
 
     <nav class="nav" id="nav">
-      <p class="nav-section" data-i18n="nav.sec.analyze"></p>
-      <button class="nav-item active" data-view="pipeline">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v14c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>
-        <span data-i18n="nav.pipeline"></span>
-      </button>
-      <button class="nav-item" data-view="dashboard">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
-        <span data-i18n="nav.dashboard"></span>
-      </button>
-      <button class="nav-item" data-view="sql">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/></svg>
-        <span data-i18n="nav.sql"></span>
-      </button>
-      <button class="nav-item" data-view="insights">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
-        <span data-i18n="nav.insights"></span>
-      </button>
-      <button class="nav-item" data-view="assistant">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-1.2 4.4L21 20l-4.3-1.1a8.5 8.5 0 1 1 4.3-7.4Z"/></svg>
-        <span data-i18n="nav.assistant"></span>
-      </button>
-      <p class="nav-section" data-i18n="nav.sec.manage"></p>
-      <button class="nav-item" data-view="roadmap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h10M4 12h16M4 18h7"/><circle cx="18" cy="6" r="2"/><circle cx="14" cy="18" r="2"/></svg>
-        <span data-i18n="nav.roadmap"></span>
-      </button>
-      <button class="nav-item" data-view="controls">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-        <span data-i18n="nav.controls"></span>
-      </button>
-      <button class="nav-item" data-view="automation">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="4" width="6" height="5" rx="1"/><rect x="9" y="15" width="6" height="5" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg>
-        <span data-i18n="nav.automation"></span>
-      </button>
-      <p class="nav-section" data-i18n="nav.sec.share"></p>
-      <button class="nav-item" data-view="enablement">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 3 5 3s5-1.8 5-3v-4.5"/></svg>
-        <span data-i18n="nav.enablement"></span>
-      </button>
+      <button class="nav-item active" data-view="pipeline" data-i18n="nav.pipeline"></button>
+      <button class="nav-item" data-view="dashboard" data-i18n="nav.dashboard"></button>
+      <button class="nav-item" data-view="sql" data-i18n="nav.sql"></button>
+      <button class="nav-item" data-view="ai" data-i18n="nav.ai"></button>
+      <button class="nav-item" data-view="management" data-i18n="nav.management"></button>
     </nav>
 
-    <div class="sidebar-bottom">
-      <button class="download-cta" id="goDownloads" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
-        <span data-i18n="cta.download"></span>
-      </button>
-      <div class="lang-toggle" id="langToggle">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="es">ES</button>
-      </div>
-      <p class="sidebar-footer" data-i18n="sidebar.footer"></p>
+    <button class="nav-item nav-cta" data-view="downloads" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+      <span data-i18n="nav.downloads"></span>
+    </button>
+
+    <div class="lang-toggle" id="langToggle">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
     </div>
-  </aside>
+  </header>
 
   <main class="main">
 
-    <header class="topbar">
+    <div class="topbar">
       <div>
         <h1 id="viewTitle"></h1>
         <p id="viewDesc"></p>
       </div>
-    </header>
+    </div>
 
     <div class="view-container">
 
       <!-- PIPELINE -->
-      <section class="view active" data-view="pipeline">
+      <section class="view active" data-view="pipeline" data-group="pipeline">
         <div class="controls-row">
           <button id="loadSampleBtn" class="btn btn-primary" data-i18n="pipeline.loadSample"></button>
           <button id="runPipelineBtn" class="btn btn-ghost" data-i18n="pipeline.run"></button>
@@ -118,7 +79,7 @@
       </section>
 
       <!-- DASHBOARD -->
-      <section class="view" data-view="dashboard">
+      <section class="view" data-view="dashboard" data-group="dashboard">
         <div class="kpi-row" id="kpiRow"></div>
         <div class="chart-grid">
           <div class="chart-card"><h3 data-i18n="dashboard.chart.budget"></h3><canvas id="chartBudget"></canvas></div>
@@ -129,7 +90,7 @@
       </section>
 
       <!-- SQL -->
-      <section class="view" data-view="sql">
+      <section class="view" data-view="sql" data-group="sql">
         <div class="sql-examples">
           <span data-i18n="sql.examples"></span>
           <button class="chip" data-sql="unmastered" data-i18n="sql.example.unmastered"></button>
@@ -148,7 +109,8 @@
       </section>
 
       <!-- INSIGHTS -->
-      <section class="view" data-view="insights">
+      <section class="view" data-view="insights" data-group="ai">
+        <div class="section-head"><h2 data-i18n="insights.title"></h2><p data-i18n="insights.desc"></p></div>
         <div class="controls-row">
           <button id="generateInsightsBtn" class="btn btn-primary" data-i18n="insights.generate"></button>
         </div>
@@ -157,7 +119,8 @@
       </section>
 
       <!-- ASSISTANT -->
-      <section class="view" data-view="assistant">
+      <section class="view" data-view="assistant" data-group="ai">
+        <div class="section-head"><h2 data-i18n="assistant.title"></h2><p data-i18n="assistant.desc"></p></div>
         <div class="chat-window">
           <div id="chatLog" class="chat-log"></div>
           <div class="chat-suggestions" id="chatSuggestions"></div>
@@ -170,7 +133,8 @@
 
 
       <!-- ROADMAP -->
-      <section class="view" data-view="roadmap">
+      <section class="view" data-view="roadmap" data-group="management">
+        <div class="section-head"><h2 data-i18n="roadmap.title"></h2><p data-i18n="roadmap.desc"></p></div>
         <div class="roadmap-grid">
           <div class="chart-card chart-tall"><h3 data-i18n="roadmap.chart.title"></h3><canvas id="chartRoadmap"></canvas><div class="status-legend" id="roadmapLegend"></div></div>
           <div class="panel panel-flush">
@@ -183,7 +147,8 @@
       </section>
 
       <!-- CONTROLS -->
-      <section class="view" data-view="controls">
+      <section class="view" data-view="controls" data-group="management">
+        <div class="section-head"><h2 data-i18n="controls.title"></h2><p data-i18n="controls.desc"></p></div>
         <div class="chip-row" id="controlsTabs">
           <button class="chip" data-ctab="matrix" data-i18n="controls.tab.matrix"></button>
           <button class="chip" data-ctab="kpis" data-i18n="controls.tab.kpis"></button>
@@ -209,7 +174,8 @@
       </section>
 
       <!-- AUTOMATION -->
-      <section class="view" data-view="automation">
+      <section class="view" data-view="automation" data-group="management">
+        <div class="section-head"><h2 data-i18n="automation.title"></h2><p data-i18n="automation.desc"></p></div>
         <div class="panel">
           <h3 data-i18n="automation.workflow.title"></h3>
           <div id="workflowSvg" class="workflow"></div>
@@ -229,7 +195,7 @@
       </section>
 
       <!-- ENABLEMENT -->
-      <section class="view" data-view="enablement">
+      <section class="view" data-view="enablement" data-group="downloads">
         <div class="downloads" id="downloads">
           <div class="download-card">
             <div class="dl-icon">BI</div>
@@ -267,13 +233,11 @@
             <h3 data-i18n="enablement.faq.title"></h3>
             <div id="faqList"></div>
           </div>
-          <div class="panel panel-wide">
-            <h3 data-i18n="enablement.roles.title"></h3>
-            <div class="table-wrap"><table class="gov-table compact" id="roleTable"></table></div>
-          </div>
         </div>
       </section>
     </div>
+
+    <footer class="page-footer" data-i18n="sidebar.footer"></footer>
   </main>
 </div>
 

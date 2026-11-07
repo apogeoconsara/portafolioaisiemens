@@ -3,14 +3,15 @@
 // longer bilingual records are {en, es} pairs resolved with LV().
 
 Object.assign(I18N.en, {
-  "nav.roadmap": "Digital Finance Roadmap",
-  "nav.controls": "Controls & Documentation",
-  "nav.automation": "Automation & Impact",
-  "nav.enablement": "Guide & Downloads",
-  "nav.sec.analyze": "Analyze",
-  "nav.sec.manage": "Manage",
-  "nav.sec.share": "Share",
-  "cta.download": "Download files",
+  "nav.ai": "AI",
+  "nav.management": "Management",
+  "nav.downloads": "Downloads",
+  "ai.title": "AI summary & assistant",
+  "ai.desc": "A short management summary and a chat about the loaded data.",
+  "management.title": "Roadmap, controls & automation",
+  "management.desc": "What to build next, how the data is controlled and the time automation saves.",
+  "downloads.title": "Downloads & guide",
+  "downloads.desc": "Get the Power BI project, the Excel workbook and the user guide.",
   "dl.pbi.title": "Power BI project",
   "dl.pbi.desc": "Model, measures and a 2-page report ready to open in Power BI Desktop.",
   "dl.button.zip": "Download (.zip)",
@@ -65,7 +66,7 @@ Object.assign(I18N.en, {
   "roadmap.ev.R6": "Executive summary generated from computed KPIs; rule-based fallback always available",
   "roadmap.ev.R7": "Not started: needs agreed close calendar and SAP posting-status extract",
   "roadmap.ev.R8": "Not started: needs driver definitions from Operations and Supply Chain",
-  "roadmap.ev.R9": "User guide, FAQ and downloads published (Guide & Downloads tab)",
+  "roadmap.ev.R9": "User guide, FAQ and downloads published (Downloads tab)",
   "roadmap.ev.R10": "Role design drafted in the Power BI model (area-based roles)",
   "roadmap.noData": "Load the sample extract in the Data Pipeline tab to see live evidence.",
 
@@ -150,25 +151,20 @@ Object.assign(I18N.en, {
   "automation.n.sql": "SQL layer",
   "automation.n.exc": "Exception list",
 
-  "enablement.title": "Guide & downloads",
-  "enablement.desc": "Get the Power BI project, Excel workbook and user guide, then see how to use the console.",
   "enablement.quick.title": "Quick start",
-  "enablement.roles.title": "Which tab is for me?",
   "enablement.faq.title": "Frequently asked questions",
-  "enablement.col.role": "Role",
-  "enablement.col.use": "Use this tab",
-  "enablement.col.question": "Question it answers",
 });
 
 Object.assign(I18N.es, {
-  "nav.roadmap": "Roadmap Digital Finance",
-  "nav.controls": "Controles y documentación",
-  "nav.automation": "Automatización e impacto",
-  "nav.enablement": "Guía y descargas",
-  "nav.sec.analyze": "Analizar",
-  "nav.sec.manage": "Gestionar",
-  "nav.sec.share": "Compartir",
-  "cta.download": "Descargar archivos",
+  "nav.ai": "IA",
+  "nav.management": "Gestión",
+  "nav.downloads": "Descargas",
+  "ai.title": "Resumen y asistente con IA",
+  "ai.desc": "Un resumen breve para la dirección y un chat sobre los datos cargados.",
+  "management.title": "Roadmap, controles y automatización",
+  "management.desc": "Qué construir después, cómo se controlan los datos y el tiempo que ahorra la automatización.",
+  "downloads.title": "Descargas y guía",
+  "downloads.desc": "Descarga el proyecto de Power BI, el libro de Excel y la guía de usuario.",
   "dl.pbi.title": "Proyecto de Power BI",
   "dl.pbi.desc": "Modelo, medidas y un reporte de 2 páginas listo para abrir en Power BI Desktop.",
   "dl.button.zip": "Descargar (.zip)",
@@ -223,7 +219,7 @@ Object.assign(I18N.es, {
   "roadmap.ev.R6": "Resumen ejecutivo generado a partir de los KPIs calculados; siempre hay respaldo basado en reglas",
   "roadmap.ev.R7": "Sin iniciar: requiere calendario de cierre acordado y extracto del estatus de contabilización en SAP",
   "roadmap.ev.R8": "Sin iniciar: requiere definir los drivers con Operaciones y Cadena de Suministro",
-  "roadmap.ev.R9": "Guía de usuario, preguntas frecuentes y descargas publicadas (pestaña Guía y descargas)",
+  "roadmap.ev.R9": "Guía de usuario, preguntas frecuentes y descargas publicadas (pestaña Descargas)",
   "roadmap.ev.R10": "Diseño de roles en borrador en el modelo Power BI (roles por área)",
   "roadmap.noData": "Carga el extracto de muestra en la pestaña Pipeline de Datos para ver la evidencia en vivo.",
 
@@ -308,14 +304,8 @@ Object.assign(I18N.es, {
   "automation.n.sql": "Capa SQL",
   "automation.n.exc": "Lista de excepciones",
 
-  "enablement.title": "Guía y descargas",
-  "enablement.desc": "Descarga el proyecto de Power BI, el libro de Excel y la guía de usuario, y mira cómo usar la consola.",
   "enablement.quick.title": "Inicio rápido",
-  "enablement.roles.title": "¿Qué pestaña me sirve?",
   "enablement.faq.title": "Preguntas frecuentes",
-  "enablement.col.role": "Rol",
-  "enablement.col.use": "Usa esta pestaña",
-  "enablement.col.question": "Pregunta que responde",
 });
 
 // ---------- Roadmap ----------
@@ -448,33 +438,22 @@ const OWNERSHIP = [
 
 // ---------- Enablement ----------
 const QUICK_START = [
-  { en: "Open the Data Pipeline tab and press “Load sample SAP extract”. Watch the four automated steps and read the 7 data controls.", es: "Abre la pestaña Pipeline de Datos y pulsa “Cargar extracto SAP de muestra”. Observa los cuatro pasos automáticos y lee los 7 controles de datos." },
+  { en: "Open Pipeline and press “Load sample SAP extract”. Watch the four automated steps and read the 7 data checks.", es: "Abre Pipeline y pulsa “Cargar extracto SAP de muestra”. Observa los cuatro pasos automáticos y lee los 7 controles de datos." },
   { en: "Go to Dashboard for spend vs. budget, variance by cost center, inventory and productivity.", es: "Ve a Dashboard para ver gasto vs. presupuesto, variación por centro de costo, inventario y productividad." },
-  { en: "Use SQL Explorer to check any number yourself; the example buttons show the most common questions.", es: "Usa el Explorador SQL para comprobar cualquier cifra; los botones de ejemplo muestran las preguntas más comunes." },
-  { en: "Read the AI Executive Summary as a draft, then confirm the figures on the Dashboard before sharing it.", es: "Lee el Resumen Ejecutivo IA como borrador y confirma las cifras en el Dashboard antes de compartirlo." },
-  { en: "If a control fails, open Controls & Documentation to see who owns it and what evidence is expected.", es: "Si un control falla, abre Controles y documentación para ver quién es responsable y qué evidencia se espera." }
-];
-
-const ROLE_GUIDE = [
-  { role: { en: "Plant controller", es: "Controller de planta" }, tab: { en: "Dashboard → SQL Explorer", es: "Dashboard → Explorador SQL" },
-    q: { en: "Which cost centers are over plan this month and why?", es: "¿Qué centros de costo exceden el plan este mes y por qué?" } },
-  { role: { en: "FP&A analyst", es: "Analista de FP&A" }, tab: { en: "AI Executive Summary → Roadmap", es: "Resumen Ejecutivo IA → Roadmap" },
-    q: { en: "What is the story for management, and what do we fix next?", es: "¿Cuál es la historia para la dirección y qué corregimos después?" } },
-  { role: { en: "Finance leadership", es: "Dirección de Finanzas" }, tab: { en: "Dashboard → Automation & Impact", es: "Dashboard → Automatización e impacto" },
-    q: { en: "How are we performing and what value does the automation return?", es: "¿Cómo vamos y qué valor devuelve la automatización?" } },
-  { role: { en: "Data steward / audit", es: "Custodio de datos / auditoría" }, tab: { en: "Controls & Documentation", es: "Controles y documentación" },
-    q: { en: "Is the data complete, who owns it and where is the evidence?", es: "¿Los datos están completos, quién es responsable y dónde está la evidencia?" } }
+  { en: "Use SQL to check any number yourself; the example buttons show the most common questions.", es: "Usa SQL para comprobar cualquier cifra; los botones de ejemplo muestran las preguntas más comunes." },
+  { en: "Read the summary in AI as a draft and confirm the figures on the Dashboard before sharing it.", es: "Lee el resumen en IA como borrador y confirma las cifras en el Dashboard antes de compartirlo." },
+  { en: "Open Management for the roadmap, the data controls and the time the automation saves.", es: "Abre Gestión para ver el roadmap, los controles de datos y el tiempo que ahorra la automatización." }
 ];
 
 const FAQ = [
   { q: { en: "Where do the numbers come from?", es: "¿De dónde vienen las cifras?" },
-    a: { en: "From four extracts: SAP FI/CO actuals and plan, the cost-center master, MM stock and an operations KPI feed. The Controls tab lists owner and refresh for each.", es: "De cuatro extractos: actuals y plan de SAP FI/CO, el maestro de centros de costo, stock MM y una fuente de KPIs de operaciones. La pestaña Controles muestra responsable y frecuencia de cada uno." } },
+    a: { en: "From four extracts: SAP FI/CO actuals and plan, the cost-center master, MM stock and an operations KPI feed. The Management tab lists the owner and refresh of each.", es: "De cuatro extractos: actuals y plan de SAP FI/CO, el maestro de centros de costo, stock MM y una fuente de KPIs de operaciones. La pestaña Gestión muestra el responsable y la frecuencia de cada uno." } },
   { q: { en: "Why is one cost center shown as “Unmapped”?", es: "¿Por qué un centro de costo aparece como “Unmapped”?" },
     a: { en: "It has postings but no master record (4009000). It is a governance finding, not a bug: ask the master data team to create or correct it.", es: "Tiene partidas pero no registro maestro (4009000). Es un hallazgo de gobierno, no un error: pide al equipo de datos maestros crearlo o corregirlo." } },
   { q: { en: "Can I trust the AI summary?", es: "¿Puedo confiar en el resumen de IA?" },
     a: { en: "Treat it as a draft. It only sees computed KPIs, and control C-09 requires an analyst to verify figures before distribution.", es: "Trátalo como borrador. Solo ve los KPIs calculados y el control C-09 exige que un analista verifique las cifras antes de distribuirlo." } },
   { q: { en: "How do I check a number myself?", es: "¿Cómo verifico una cifra por mi cuenta?" },
-    a: { en: "Open SQL Explorer and query the raw tables or the joined finance view. The same logic is in the Power BI measures.", es: "Abre el Explorador SQL y consulta las tablas originales o la vista finance cruzada. La misma lógica está en las medidas de Power BI." } },
+    a: { en: "Open SQL and query the raw tables or the joined finance view. The same logic is in the Power BI measures.", es: "Abre SQL y consulta las tablas originales o la vista finance cruzada. La misma lógica está en las medidas de Power BI." } },
   { q: { en: "What happens when a control fails?", es: "¿Qué pasa cuando un control falla?" },
     a: { en: "The run still completes, the failed check is shown with the affected records, and the owner in the control matrix follows up.", es: "La corrida termina, el control fallido se muestra con los registros afectados y el responsable de la matriz de controles da seguimiento." } },
   { q: { en: "Who do I ask for a new KPI or report?", es: "¿A quién pido un KPI o reporte nuevo?" },

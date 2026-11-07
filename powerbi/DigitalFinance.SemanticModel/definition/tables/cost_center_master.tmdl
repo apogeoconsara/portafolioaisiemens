@@ -39,8 +39,8 @@ table cost_center_master
 		mode: import
 		source =
 			let
-			    Source = Csv.Document(File.Contents(DataFolder & "cost_center_master.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-			    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-			    Typed = Table.TransformColumnTypes(Headers, {{"kokrs", type text}, {"bukrs", type text}, {"kostl", type text}, {"kostl_name", type text}, {"kostl_group", type text}, {"werks", type text}, {"status", type text}}, "en-US")
+				Source = Csv.Document(File.Contents(DataFolder & "cost_center_master.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				Typed = Table.TransformColumnTypes(Headers, {{"kokrs", type text}, {"bukrs", type text}, {"kostl", type text}, {"kostl_name", type text}, {"kostl_group", type text}, {"werks", type text}, {"status", type text}}, "en-US")
 			in
-			    Typed
+				Typed
