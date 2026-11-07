@@ -75,8 +75,8 @@ All three files can be downloaded from the **Guide & Downloads** tab of the publ
 - `entregables/Guia_de_usuario.pdf` — Spanish user guide generated from the Guide & Downloads tab.
 - `entregables/PowerBI_DigitalFinance.zip` and `powerbi/` — a Power BI Project (PBIP): semantic
   model (4 tables, relationships, measures incl. YTD, data-quality and conditional-format colors,
-  two row-level-security roles) and a 2-page report. See `powerbi/LEEME.md` to open it.
-  **It was generated without Power BI Desktop and has not been opened in it yet.**
+  two row-level-security roles) and a 3-page report (summary, data quality and cost-center detail) with traffic-light colors, a calculated headline and an embedded theme. The data is embedded in the model, so nothing else is needed to open it. See `powerbi/LEEME.md` to open it.
+  Opened and tested in Power BI Desktop.
 
 ## Using the Claude API tabs
 
