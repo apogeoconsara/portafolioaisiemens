@@ -23,6 +23,16 @@ table fico_actuals
 	measure 'Color variacion' = IF(ABS([Variacion %]) <= 0.03, "#1a9c63", IF(ABS([Variacion %]) <= 0.08, "#b5720a", "#d1373f"))
 		displayFolder: Formato condicional
 
+	measure 'Centros sobre 5%' = COUNTROWS(FILTER(VALUES(cost_center_master[kostl_name]), [Variacion %] > 0.05))
+		formatString: 0
+		displayFolder: Titulares
+
+	measure Titular = VAR n = [Centros sobre 5%] RETURN "Gasto " & FORMAT([Variacion %], "+0.0%;-0.0%") & " vs. plan · " & n & IF(n = 1, " centro supera", " centros superan") & " el plan en más de 5 %"
+		displayFolder: Titulares
+
+	measure 'Color barra' = IF([Variacion %] > 0.05, "#d1373f", IF([Variacion %] < -0.05, "#1a9c63", "#0077b6"))
+		displayFolder: Formato condicional
+
 	measure 'Partidas sin maestro' = COUNTROWS(FILTER(fico_actuals, ISBLANK(RELATED(cost_center_master[kostl]))))
 		formatString: 0
 		displayFolder: Calidad de datos

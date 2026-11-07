@@ -2,6 +2,9 @@ table ops_kpis
 	measure Productividad = AVERAGE(ops_kpis[productivity_index])
 		formatString: 0.00
 
+	measure 'Color productividad' = IF([Productividad] >= 1, "#1a9c63", "#b5720a")
+		displayFolder: Formato condicional
+
 	column gjahr
 		dataType: int64
 		sourceColumn: gjahr
