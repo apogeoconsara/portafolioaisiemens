@@ -5,3 +5,15 @@ relationship fico_to_cc
 relationship ops_to_cc
 	fromColumn: ops_kpis.kostl
 	toColumn: cost_center_master.kostl
+
+relationship fico_to_periodo
+	fromColumn: fico_actuals.poper
+	toColumn: Periodo.poper
+
+relationship ops_to_periodo
+	fromColumn: ops_kpis.poper
+	toColumn: Periodo.poper
+
+relationship inventory_to_periodo
+	fromColumn: inventory_mm.poper
+	toColumn: Periodo.poper

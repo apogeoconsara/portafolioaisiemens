@@ -310,10 +310,6 @@ function renderAutomation() {
 function renderEnablement() {
   document.getElementById("quickStart").innerHTML = QUICK_START.map((s, i) => `<li><span class="qs-n">${i + 1}</span><span>${esc(LV(s))}</span></li>`).join("");
 
-  document.getElementById("roleTable").innerHTML = `
-    <thead><tr><th>${t("enablement.col.role")}</th><th>${t("enablement.col.use")}</th><th>${t("enablement.col.question")}</th></tr></thead>
-    <tbody>${ROLE_GUIDE.map(r => `<tr><td class="strong">${esc(LV(r.role))}</td><td>${esc(LV(r.tab))}</td><td>${esc(LV(r.q))}</td></tr>`).join("")}</tbody>`;
-
   document.getElementById("faqList").innerHTML = FAQ.map(f => `<details class="faq"><summary>${esc(LV(f.q))}</summary><p>${esc(LV(f.a))}</p></details>`).join("");
 }
 
@@ -344,8 +340,4 @@ document.getElementById("impactInputs").addEventListener("input", (e) => {
   if (el.dataset.imp === "step") impactState.steps[el.dataset.key][Number(el.dataset.idx)] = v;
   else impactState[el.dataset.key] = v;
   updateImpactOutputs();
-});
-document.getElementById("goDownloads").addEventListener("click", () => {
-  switchView("enablement");
-  document.getElementById("downloads").scrollIntoView({ behavior: "smooth", block: "start" });
 });

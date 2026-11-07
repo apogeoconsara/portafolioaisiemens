@@ -19,13 +19,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "fico_actuals"
+                      "Entity": "Periodo"
                     }
                   },
                   "Property": "poper"
                 }
               },
-              "queryRef": "fico_actuals.poper",
+              "queryRef": "Periodo.poper",
               "nativeQueryRef": "poper"
             }
           ]

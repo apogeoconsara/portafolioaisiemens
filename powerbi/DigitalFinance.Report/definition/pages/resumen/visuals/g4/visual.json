@@ -19,13 +19,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "ops_kpis"
+                      "Entity": "Periodo"
                     }
                   },
                   "Property": "poper"
                 }
               },
-              "queryRef": "ops_kpis.poper",
+              "queryRef": "Periodo.poper",
               "nativeQueryRef": "poper"
             }
           ]

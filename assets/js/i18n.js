@@ -2,14 +2,11 @@
 const I18N = {
   en: {
     "app.title": "Digital Finance Console",
-    "app.subtitle": "SAP FI/CO automation & analytics",
-    "nav.pipeline": "Data Pipeline",
+    "nav.pipeline": "Pipeline",
     "nav.dashboard": "Dashboard",
-    "nav.sql": "SQL Explorer",
-    "nav.insights": "AI Executive Summary",
-    "nav.assistant": "AI Assistant",
+    "nav.sql": "SQL",
     "sidebar.language": "Language",
-    "sidebar.footer": "Automation demo for the Siemens Energy Digital Finance role",
+    "sidebar.footer": "Demo built for the Siemens Energy Digital Finance role. Sample data only.",
 
     "pipeline.title": "SAP FI/CO Data Pipeline",
     "pipeline.desc": "Loads four SAP-style extracts, checks them for problems and prepares them for the dashboard.",
@@ -106,14 +103,11 @@ const I18N = {
   },
   es: {
     "app.title": "Consola de Digital Finance",
-    "app.subtitle": "Automatización y analítica SAP FI/CO",
-    "nav.pipeline": "Pipeline de Datos",
+    "nav.pipeline": "Pipeline",
     "nav.dashboard": "Dashboard",
-    "nav.sql": "Explorador SQL",
-    "nav.insights": "Resumen Ejecutivo IA",
-    "nav.assistant": "Asistente IA",
+    "nav.sql": "SQL",
     "sidebar.language": "Idioma",
-    "sidebar.footer": "Demo de automatización para la posición Digital Finance en Siemens Energy",
+    "sidebar.footer": "Demo creada para el puesto de Digital Finance en Siemens Energy. Solo datos de muestra.",
 
     "pipeline.title": "Pipeline de datos SAP FI/CO",
     "pipeline.desc": "Carga cuatro extractos tipo SAP, los revisa y los prepara para el dashboard.",
